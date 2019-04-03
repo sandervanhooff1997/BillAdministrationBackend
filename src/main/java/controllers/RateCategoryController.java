@@ -2,7 +2,6 @@ package controllers;
 
 import models.RateCategory;
 import services.RateCategoryService;
-
 import javax.ejb.EJB;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

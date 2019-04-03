@@ -6,7 +6,6 @@ import org.hibernate.annotations.LazyCollectionOption;
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.Positive;
 import java.util.List;
 
 @Entity
@@ -28,7 +27,7 @@ public class Vehicle {
     @ManyToOne
     private RateCategory rateCategory;
 
-    @ManyToOne
+    @OneToOne
     private CarTracker carTracker;
 
     @OneToMany(targetEntity = OwnerCredentials.class)
@@ -36,6 +35,10 @@ public class Vehicle {
     private List ownerCredentials;
 
     public Vehicle() {
+    }
+
+    public Vehicle(String licencePlate) {
+        this.licencePlate = licencePlate;
     }
 
     public Long getId() {

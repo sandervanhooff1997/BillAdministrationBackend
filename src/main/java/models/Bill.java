@@ -1,13 +1,11 @@
 package models;
 
 import com.sun.istack.internal.NotNull;
-
 import javax.persistence.*;
-//import javax.validation.constraints.NotNull;
-
+import java.util.Calendar;
 import java.util.Date;
-
 import static javax.persistence.EnumType.STRING;
+
 
 @Entity
 @NamedQueries({
@@ -29,7 +27,7 @@ public class Bill {
     @Column(nullable = false)
     private PaymentStatus paymentStatus = PaymentStatus.OPEN;
 
-    private Double amount;
+    private Double totalAmount;
 
     private Date date;
 
@@ -61,12 +59,19 @@ public class Bill {
         this.paymentStatus = paymentStatus;
     }
 
-    public Double getAmount() {
-        return amount;
+    public Double getTotalAmount() {
+        return totalAmount;
     }
 
-    public void setAmount(Double amount) {
-        this.amount = amount;
+    public void setTotalAmount(Double totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    public String getMonth() {
+        Calendar c = Calendar.getInstance();
+        int month = c.get(Calendar.MONTH);
+
+        return String.valueOf( month );
     }
 
     public Date getDate() {
@@ -83,7 +88,7 @@ public class Bill {
                 "id=" + id +
                 ", carTracker=" + carTracker +
                 ", paymentStatus=" + paymentStatus +
-                ", amount=" + amount +
+                ", totalAmount=" + totalAmount +
                 ", date=" + date +
                 '}';
     }

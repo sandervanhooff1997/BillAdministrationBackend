@@ -15,14 +15,23 @@ public class CarTracker {
     @GeneratedValue
     private Long id;
 
-    @Positive
-    private int kilometers;
+    private int mileage;
 
     private String hardware;
 
     private boolean isDeleted;
 
+    @OneToOne
+    private Vehicle vehicle;
+
     public CarTracker() {
+    }
+
+    public CarTracker(int mileage, String hardware, boolean isDeleted, Vehicle vehicle) {
+        this.mileage = mileage;
+        this.hardware = hardware;
+        this.isDeleted = isDeleted;
+        this.vehicle = vehicle;
     }
 
     public Long getId() {
@@ -33,12 +42,12 @@ public class CarTracker {
         this.id = id;
     }
 
-    public int getKilometers() {
-        return kilometers;
+    public int getMileage() {
+        return mileage;
     }
 
-    public void setKilometers(int kilometers) {
-        this.kilometers = kilometers;
+    public void setMileage(int mileage) {
+        this.mileage = mileage;
     }
 
     public String getHardware() {
@@ -49,11 +58,19 @@ public class CarTracker {
         this.hardware = hardware;
     }
 
+    public Vehicle getVehicle() {
+        return vehicle;
+    }
+
+    public void setVehicle(Vehicle vehicle) {
+        this.vehicle = vehicle;
+    }
+
     @Override
     public String toString() {
         return "CarTracker{" +
                 "id=" + id +
-                ", kilometers=" + kilometers +
+                ", Mileage=" + mileage +
                 ", hardware='" + hardware + '\'' +
                 '}';
     }

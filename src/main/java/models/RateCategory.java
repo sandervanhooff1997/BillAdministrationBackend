@@ -24,7 +24,6 @@ public class RateCategory {
     @NotNull
     private String name;
 
-    @PositiveOrZero
     private Double price;
 
     public RateCategory() {
