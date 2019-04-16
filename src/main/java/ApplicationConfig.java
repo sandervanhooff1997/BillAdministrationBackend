@@ -1,5 +1,6 @@
-import javax.ws.rs.core.*;
+import javax.ws.rs.core.Application;
 
 @javax.ws.rs.ApplicationPath("")
 public class ApplicationConfig extends Application {
+
 }
