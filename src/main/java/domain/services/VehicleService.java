@@ -37,6 +37,23 @@ public class VehicleService {
         }
     }
 
+    public List<Vehicle> getAllStolen() {
+        try {
+            List<Vehicle> vehicles = repository.getAll();
+            List<Vehicle> stolen = new ArrayList<>();
+
+            for (Vehicle v : vehicles) {
+                if (v.isStolen())
+                    stolen.add(v);
+            }
+
+            return stolen;
+        } catch (Exception ex){
+            System.out.println(ex.getMessage());
+            return null;
+        }
+    }
+
     public Vehicle getById(Long id) {
         return repository.getById(id);
     }
@@ -72,6 +89,22 @@ public class VehicleService {
             System.out.println(e.getMessage());
             return false;
         }
+    }
+
+    public boolean markAsStolen(String licencePlate, boolean isStolen) {
+        if (licencePlate.isEmpty())
+            return false;
+
+        Vehicle v = getByLicencePlate(licencePlate);
+
+        if (v == null)
+            return false;
+
+        // make the mark
+        v.setStolen(isStolen);
+
+        repository.update(v);
+        return true;
     }
 
     public boolean update(Vehicle vehicle) {

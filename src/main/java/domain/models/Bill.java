@@ -28,7 +28,7 @@ public class Bill implements Serializable {
 
     @OneToMany(targetEntity = CarTracker.class, cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List carTrackers = new ArrayList();
+    private List carTrackers;
 
     @NotNull
     @Enumerated(STRING)
@@ -40,6 +40,7 @@ public class Bill implements Serializable {
     private Date date;
 
     public Bill() {
+        carTrackers = new ArrayList();
     }
 
     public Long getId() {

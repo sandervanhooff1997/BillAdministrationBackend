@@ -19,6 +19,13 @@ public class CarTrackerController {
         return Response.ok(service.getAll()).build();
     }
 
+    @GET
+    @Path("/unused")
+    @Produces("application/json")
+    public Response getAllUnused() {
+        return Response.ok(service.getAllUnused()).build();
+    }
+
     @POST
     @Consumes("application/json")
     @Produces("application/json")

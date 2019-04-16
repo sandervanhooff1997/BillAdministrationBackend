@@ -1,6 +1,7 @@
 package domain.controllers;
 
 import domain.controllers.Requests.CreateVehicleRequest;
+import domain.controllers.Requests.MarkVehicleAsStolenRequest;
 import domain.models.Vehicle;
 import domain.services.VehicleService;
 
@@ -18,6 +19,32 @@ public class VehicleController {
     @Produces("application/json")
     public Response getAll() {
         return Response.ok(service.getAll()).build();
+    }
+
+    @GET
+    @Path("/stolen")
+    @Produces("application/json")
+    public Response getAllStolen() {
+        return Response.ok(service.getAllStolen()).build();
+    }
+
+    @PUT
+    @Produces("application/json")
+    public Response update(Vehicle v) {
+        return Response.ok(service.update(v)).build();
+    }
+
+    @PUT
+    @Path("/stolen")
+    @Produces("application/json")
+    public Response update(MarkVehicleAsStolenRequest req) {
+        boolean success = service.markAsStolen(req.getLicencePlate(), req.isStolen());
+
+        /**
+         * todo: Send all stolen vehicles to Movement Registration system
+         */
+
+        return Response.ok().build();
     }
 
     @POST

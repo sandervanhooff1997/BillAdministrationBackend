@@ -26,18 +26,22 @@ public class Vehicle implements Serializable {
 
     private String licencePlate;
 
+    private boolean isStolen;
+
     @ManyToOne(cascade = CascadeType.ALL)
     private RateCategory rateCategory;
 
     @OneToMany(targetEntity = CarTracker.class, cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<CarTracker> carTrackers = new ArrayList();
+    private List<CarTracker> carTrackers;
 
     @OneToMany(targetEntity = OwnerCredentials.class, cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<OwnerCredentials> ownerCredentials = new ArrayList();
+    private List<OwnerCredentials> ownerCredentials;
 
     public Vehicle() {
+        carTrackers = new ArrayList<>();
+        ownerCredentials = new ArrayList<>();
     }
 
     public Vehicle(String licencePlate) {
@@ -91,6 +95,15 @@ public class Vehicle implements Serializable {
 
     public void setCarTrackers(List carTrackers) {
         this.carTrackers = carTrackers;
+    }
+
+
+    public boolean isStolen() {
+        return isStolen;
+    }
+
+    public void setStolen(boolean stolen) {
+        isStolen = stolen;
     }
 
     @Override

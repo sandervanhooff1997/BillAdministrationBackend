@@ -32,9 +32,10 @@ public class RateCategory implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<Vehicle> vehicles = new ArrayList<>();
+    private List<Vehicle> vehicles;
 
     public RateCategory() {
+        vehicles = new ArrayList();
     }
 
     public Long getId() {
