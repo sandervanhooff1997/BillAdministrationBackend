@@ -80,6 +80,9 @@ public class Vehicle implements Serializable {
         this.ownerCredentials = ownerCredentials;
     }
 
+    public void addOwnerCredentials(OwnerCredentials oc) {
+        this.ownerCredentials.add(oc);
+    }
 
     public List<CarTracker> getCarTrackers() {
         return carTrackers;

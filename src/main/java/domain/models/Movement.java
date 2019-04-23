@@ -1,5 +1,8 @@
 package domain.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import java.awt.*;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
@@ -10,15 +13,10 @@ public class Movement implements Serializable {
     private String authorisationCode;
     private Date date;
     private CarTracker carTracker;
+    private Point coord = new Point();
 
-    public Movement(Long id, Long serialNumber, String authorisationCode, Date date, CarTracker cartracker) {
-        this.id = id;
-        this.serialNumber = serialNumber;
-        this.authorisationCode = authorisationCode;
-        this.date = date;
-        this.carTracker = cartracker;
+    public Movement() {
     }
-
 
     public CarTracker getCarTracker() {
         return carTracker;
@@ -60,10 +58,24 @@ public class Movement implements Serializable {
         this.date = date;
     }
 
-    public String getMonth() {
+    public String getMonthName() {
         Calendar c = Calendar.getInstance();
-        c.setTime(date);
+        c.setTime(new Date());
         int month = c.get(Calendar.MONTH);
         return String.valueOf( month );
+    }
+
+    public int getMonthIndex() {
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        return c.get(Calendar.MONTH);
+    }
+
+    public Point getCoord() {
+        return coord;
+    }
+
+    public void setCoord(Point coord) {
+        this.coord = coord;
     }
 }

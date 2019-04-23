@@ -1,13 +1,14 @@
 package domain.models;
 
 import com.sun.istack.internal.NotNull;
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.text.DateFormatSymbols;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -37,10 +38,36 @@ public class Bill implements Serializable {
 
     private Double totalAmount;
 
-    private Date date;
+    private int monthIndex;
+
+    private String monthName;
+
+    @CreationTimestamp
+    private Date createDate;
 
     public Bill() {
         carTrackers = new ArrayList();
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public void setMonthName(String monthName) {
+        this.monthName = monthName;
+    }
+
+    public void setMonth(int index) {
+        this.monthIndex = index;
+        this.monthName = new DateFormatSymbols().getMonths()[index];
+    }
+
+    public String getMonthName() {
+        return monthName;
     }
 
     public Long getId() {
@@ -68,21 +95,13 @@ public class Bill implements Serializable {
         this.totalAmount = totalAmount;
     }
 
-    public String getMonth() {
-        Calendar c = Calendar.getInstance();
-        int month = c.get(Calendar.MONTH);
-
-        return String.valueOf( month );
+    public int getMonthIndex() {
+        return monthIndex;
     }
 
-    public Date getDate() {
-        return date;
+    public void setMonthIndex(int monthIndex) {
+        this.monthIndex = monthIndex;
     }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
 
     public List getCarTrackers() {
         return carTrackers;
@@ -98,5 +117,16 @@ public class Bill implements Serializable {
 
     public void setCarTrackers(List carTrackers) {
         this.carTrackers = carTrackers;
+    }
+
+    @Override
+    public String toString() {
+        return "Bill{" +
+                "id=" + id +
+                ", carTrackers=" + carTrackers +
+                ", paymentStatus=" + paymentStatus +
+                ", totalAmount=" + totalAmount +
+                ", month='" + monthIndex + '\'' +
+                '}';
     }
 }

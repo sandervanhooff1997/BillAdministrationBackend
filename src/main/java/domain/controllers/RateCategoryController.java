@@ -25,4 +25,11 @@ public class RateCategoryController {
     public Response addCarTracker(RateCategory rc) {
         return Response.ok(service.create(rc)).build();
     }
+
+    @PUT
+    @Produces("application/json")
+    @Consumes("application/json")
+    public Response editCarTracker(RateCategory rc) {
+        return Response.ok(service.update(rc)).build();
+    }
 }

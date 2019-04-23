@@ -24,6 +24,12 @@ public class CarTracker implements Serializable {
     public CarTracker() {
     }
 
+    public CarTracker(int mileage, String hardware, boolean isDeleted) {
+        this.mileage = mileage;
+        this.hardware = hardware;
+        this.isDeleted = isDeleted;
+    }
+
     public Long getId() {
         return id;
     }

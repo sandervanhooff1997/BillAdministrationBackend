@@ -4,6 +4,8 @@ import domain.models.CarTracker;
 import domain.models.Movement;
 import domain.models.Vehicle;
 import domain.services.BillService;
+import domain.services.CarTrackerService;
+import domain.services.VehicleService;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,24 +26,21 @@ public class BillServiceTest {
 
     @Test
     public void generateBill() {
-//        BillService service = new BillService();
+//        BillService billService = new BillService();
+//        VehicleService vehicleService = new VehicleService();
+//        CarTrackerService carTrackerService = new CarTrackerService();
 //
 //        List<Movement> movements = new ArrayList<>(  );
 //
-//        Vehicle v = new Vehicle("XX-XX-X" + 1);
-//        CarTracker ct = new CarTracker( (1*1000), "", false, v );
-//        Movement m = new Movement( 1L, 3L, "AUTH" + 1,  new Date(), ct);
-//        movements.add(m );
+//        CarTracker ct = carTrackerService.getAll().get(0);
+//        Vehicle v = vehicleService.getAll().get(0);
 //
 //        int i = 1;
 //        while (i < 10) {
-//            v = new Vehicle("XX-XX-X" + 1);
-//             ct = new CarTracker( (i*1000), "", false, v );
-//             m = new Movement( 1L, 3L, "AUTH" + i,  new Date(), ct);
-//            movements.add(m );
+//            movements.add(new Movement( 1L, 3L, "AUTH" + i,  new Date(), ct));
 //            i++;
 //        }
 //
-//        service.generateBill( movements );
+//        billService.generateBills( movements );
     }
 }

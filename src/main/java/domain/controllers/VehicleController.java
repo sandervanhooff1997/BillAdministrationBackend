@@ -28,6 +28,13 @@ public class VehicleController {
         return Response.ok(service.getAllStolen()).build();
     }
 
+    @GET
+    @Path("/{licencePlate}")
+    @Produces("application/json")
+    public Response getByLicencePlate(@PathParam(value="licencePlate") String licencePlate) {
+        return Response.ok(service.getByLicencePlate(licencePlate)).build();
+    }
+
     @PUT
     @Produces("application/json")
     public Response update(Vehicle v) {
@@ -51,6 +58,6 @@ public class VehicleController {
     @Produces("application/json")
     @Consumes("application/json")
     public Response create(CreateVehicleRequest request) {
-        return Response.ok(service.create(request.getLicencePlate(), request.getRateCategoryId(), request.getCarTrackerId())).build();
+        return Response.ok(service.create(request.getLicencePlate(), request.getRateCategoryId(), request.getCarTrackerId(), request.getOwnerCredentialsId())).build();
     }
 }

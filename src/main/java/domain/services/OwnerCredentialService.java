@@ -1,7 +1,7 @@
 package domain.services;
 
-
 import domain.models.OwnerCredentials;
+import domain.models.Vehicle;
 import domain.repositories.OwnerCredentialRepository;
 
 import javax.ejb.EJB;
@@ -15,8 +15,26 @@ public class OwnerCredentialService {
     @EJB
     private OwnerCredentialRepository repository;
 
+    @EJB
+    private VehicleService vehicleService;
+
     public List<OwnerCredentials> getAll() {
         return repository.getAll();
+    }
+
+    public List<OwnerCredentials> getAllUnused() {
+        List<OwnerCredentials> ownerCredentials = getAll();
+        List<Vehicle> vehicles = vehicleService.getAll();
+
+        // remove used cartrackers
+        for (Vehicle v : vehicles) {
+            for (OwnerCredentials oc : v.getOwnerCredentials()) {
+                if (oc != null)
+                    ownerCredentials.remove(oc);
+            }
+        }
+
+        return ownerCredentials;
     }
 
     public OwnerCredentials getById(Long id) {

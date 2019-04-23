@@ -44,7 +44,9 @@ public class BillRepository {
 
     public void create(Bill bill) {
         try {
-            em.persist(bill);
+            em.getTransaction().begin();
+            em.merge(bill);
+            em.getTransaction().commit();
         } catch (HibernateException ex) {
             System.out.println(ex.getMessage());
         }

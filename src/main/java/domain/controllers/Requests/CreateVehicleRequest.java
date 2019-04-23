@@ -1,11 +1,23 @@
 package domain.controllers.Requests;
 
+import domain.models.OwnerCredentials;
+
 public class CreateVehicleRequest {
     private String licencePlate;
 
     private Long carTrackerId;
 
     private Long rateCategoryId;
+
+    private Long ownerCredentialsId;
+
+    public Long getOwnerCredentialsId() {
+        return ownerCredentialsId;
+    }
+
+    public void setOwnerCredentialsId(Long ownerCredentialsId) {
+        this.ownerCredentialsId = ownerCredentialsId;
+    }
 
     public String getLicencePlate() {
         return licencePlate;

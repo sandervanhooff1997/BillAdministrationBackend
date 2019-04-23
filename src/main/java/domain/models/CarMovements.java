@@ -8,7 +8,7 @@ import java.util.Map;
 public class CarMovements {
     private String licencePlate;
     private List<Movement>  movements;
-    private Map<String,List<Movement>> monthMovements;
+    private Map<String, List<Movement>> monthMovements;
 
     public CarMovements(String licencePlate) {
         this.licencePlate = licencePlate;
@@ -30,11 +30,11 @@ public class CarMovements {
     }
 
     private void addMonthMovement(Movement m) {
-        List<Movement> movements = monthMovements.get( m.getMonth() );
+        List<Movement> movements = monthMovements.get( m.getMonthName() );
 
         if (movements == null) {
             movements = new ArrayList<>(  );
-            monthMovements.put( m.getMonth(), movements );
+            monthMovements.put( m.getMonthName(), movements );
         }
 
         movements.add( m );
