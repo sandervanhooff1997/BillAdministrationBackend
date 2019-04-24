@@ -1,8 +1,13 @@
 package domain.models;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @NamedQueries({
@@ -32,7 +37,12 @@ public class OwnerCredentials  implements Serializable {
 
     private Date end;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<Bill> bills;
+
     public OwnerCredentials() {
+        bills = new ArrayList<>();
     }
 
     public String getAddress () {

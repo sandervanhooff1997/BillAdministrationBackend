@@ -76,7 +76,7 @@ public class Vehicle implements Serializable {
         return ownerCredentials;
     }
 
-    public void setOwnerCredentials(List ownerCredentials) {
+    public void setOwnerCredentials(List<OwnerCredentials> ownerCredentials) {
         this.ownerCredentials = ownerCredentials;
     }
 
@@ -96,10 +96,9 @@ public class Vehicle implements Serializable {
         return (CarTracker) carTrackers.get(carTrackers.size()-1);
     }
 
-    public void setCarTrackers(List carTrackers) {
+    public void setCarTrackers(List<CarTracker> carTrackers) {
         this.carTrackers = carTrackers;
     }
-
 
     public boolean isStolen() {
         return isStolen;

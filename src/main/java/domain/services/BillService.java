@@ -107,6 +107,7 @@ public class BillService {
                     b.setPaymentStatus(PaymentStatus.OPEN);
                     b.setTotalAmount(calculateMileageCosts(difference));
                     b.setCarTrackers(v.getCarTrackers());
+                    b.setOwnerCredentials(v.getOwnerCredentials().get(v.getOwnerCredentials().size()-1));
 
                     // persist to database !!
                     create(b);

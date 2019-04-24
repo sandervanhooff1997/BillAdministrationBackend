@@ -42,6 +42,9 @@ public class Bill implements Serializable {
 
     private String monthName;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    private OwnerCredentials ownerCredentials;
+
     @CreationTimestamp
     private Date createDate;
 
@@ -117,6 +120,14 @@ public class Bill implements Serializable {
 
     public void setCarTrackers(List carTrackers) {
         this.carTrackers = carTrackers;
+    }
+
+    public OwnerCredentials getOwnerCredentials() {
+        return ownerCredentials;
+    }
+
+    public void setOwnerCredentials(OwnerCredentials ownerCredentials) {
+        this.ownerCredentials = ownerCredentials;
     }
 
     @Override
