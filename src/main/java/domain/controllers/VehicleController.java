@@ -2,6 +2,8 @@ package domain.controllers;
 
 import domain.controllers.Requests.CreateVehicleRequest;
 import domain.controllers.Requests.MarkVehicleAsStolenRequest;
+import domain.controllers.Requests.TransferOwenershipVehicleRequest;
+import domain.models.OwnerCredentials;
 import domain.models.Vehicle;
 import domain.services.VehicleService;
 
@@ -42,16 +44,19 @@ public class VehicleController {
     }
 
     @PUT
+    @Path("/transferownership")
+    @Produces("application/json")
+    public Response transferOwnership(TransferOwenershipVehicleRequest req) {
+        return Response.ok(service.transferOwnership(req.getVehicleId(), req.getOcId())).build();
+    }
+
+    @PUT
     @Path("/stolen")
     @Produces("application/json")
     public Response update(MarkVehicleAsStolenRequest req) {
         boolean success = service.markAsStolen(req.getLicencePlate(), req.isStolen());
 
-        /**
-         * todo: Send all stolen vehicles to Movement Registration system
-         */
-
-        return Response.ok().build();
+        return Response.ok(success).build();
     }
 
     @POST

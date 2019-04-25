@@ -147,8 +147,28 @@ public class BillService {
             System.out.println(e.getMessage());
         }
     }
+
     public List<Bill> getAll() {
         return repository.getAll();
     }
 
+    public List<Bill> getAllByVehicleId(Long vehicleId) {
+        Vehicle v = vehicleService.getById(vehicleId);
+
+        if (v == null)
+            return null;
+
+        List<Bill> all = getAll();
+        List<Bill> bills = new ArrayList<>();
+
+        if (all == null)
+            return null;
+
+        for (Bill b : all) {
+            if (!Collections.disjoint(b.getCarTrackers(), v.getCarTrackers()))
+                bills.add(b);
+        }
+
+        return bills;
+    }
 }

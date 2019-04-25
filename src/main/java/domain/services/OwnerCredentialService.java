@@ -37,6 +37,21 @@ public class OwnerCredentialService {
         return ownerCredentials;
     }
 
+    public List<OwnerCredentials> getAllUnusedByVehicleId(Long vehicleId) {
+        List<OwnerCredentials> ownerCredentials = getAll();
+        Vehicle v = vehicleService.getById(vehicleId);
+
+        if (v == null)
+            return null;
+
+        for (OwnerCredentials oc : v.getOwnerCredentials()) {
+            if (oc != null)
+                ownerCredentials.remove(oc);
+        }
+
+        return ownerCredentials;
+    }
+
     public OwnerCredentials getById(Long id) {
         return repository.getById(id);
     }

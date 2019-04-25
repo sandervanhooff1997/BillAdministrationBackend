@@ -21,6 +21,13 @@ public class BillController {
         return Response.ok(service.getAll()).build();
     }
 
+    @GET
+    @Path("vehicle/{vehicleId}")
+    @Produces("application/json")
+    public Response getAllByVehicleId(@PathParam(value = "vehicleId") Long vehicleId) {
+        return Response.ok(service.getAllByVehicleId(vehicleId)).build();
+    }
+
     @PUT
     @Produces("application/json")
     @Consumes("application/json")

@@ -5,6 +5,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -109,12 +110,38 @@ public class OwnerCredentials  implements Serializable {
         return begin;
     }
 
+    public String getBeginFormatted () {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        try {
+            return simpleDateFormat.format(begin);
+        } catch (NullPointerException ex) {
+            return null;
+        }
+        catch (Exception ex
+        ) {
+            return begin.toString();
+        }
+    }
+
     public void setBegin(Date begin) {
         this.begin = begin;
     }
 
     public Date getEnd() {
         return end;
+    }
+
+    public String getEndFormatted () {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        try {
+            return simpleDateFormat.format(begin);
+        } catch (NullPointerException ex) {
+            return null;
+        }
+        catch (Exception ex
+        ) {
+            return begin.toString();
+        }
     }
 
     public void setEnd(Date end) {

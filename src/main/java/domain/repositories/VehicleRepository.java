@@ -50,8 +50,10 @@ public class VehicleRepository {
         em.getTransaction().commit();
     }
 
-    public void update(Vehicle rateCategory) {
-        em.merge(rateCategory);
+    public void update(Vehicle vehicle) {
+        em.getTransaction().begin();
+        em.merge(vehicle);
+        em.getTransaction().commit();
     }
 
     public void delete(Vehicle rateCategory) {

@@ -136,6 +136,22 @@ public class VehicleService {
         return true;
     }
 
+    public boolean transferOwnership (Long vId, Long ocId) {
+        OwnerCredentials oc = ownerCredentialService.getById(ocId);
+
+        if (oc == null)
+            return false;
+
+        Vehicle v = getById(vId);
+
+        if (v == null)
+            return false;
+
+        v.getOwnerCredentials().add(oc);
+
+        return update(v);
+    }
+
     public boolean delete(Long id) {
         Vehicle vehicle = repository.getById(id);
 

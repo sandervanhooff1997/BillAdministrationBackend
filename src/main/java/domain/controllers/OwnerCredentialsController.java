@@ -26,6 +26,13 @@ public class OwnerCredentialsController {
         return Response.ok(service.getAllUnused()).build();
     }
 
+    @GET
+    @Path("/unused/{vehicleId}")
+    @Produces("application/json")
+    public Response getAllUnusedByVehicleId(@PathParam(value = "vehicleId") Long vehicleId) {
+        return Response.ok(service.getAllUnusedByVehicleId(vehicleId)).build();
+    }
+
     @PUT
     @Produces("application/json")
     public Response update(OwnerCredentials oc) {

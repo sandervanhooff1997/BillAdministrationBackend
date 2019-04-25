@@ -8,6 +8,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.text.DateFormatSymbols;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -56,6 +57,18 @@ public class Bill implements Serializable {
         return createDate;
     }
 
+    public String getCreateDateFormatted () {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        try {
+            return simpleDateFormat.format(createDate);
+        } catch (NullPointerException ex) {
+            return null;
+        }
+        catch (Exception ex
+        ) {
+            return createDate.toString();
+        }
+    }
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
