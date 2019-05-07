@@ -14,6 +14,7 @@ public class Movement implements Serializable {
     private Date date;
     private CarTracker carTracker;
     private Point coord = new Point();
+    private Double distanceFromPreviousMovement;
 
     public Movement() {
     }
@@ -56,6 +57,14 @@ public class Movement implements Serializable {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public Double getDistanceFromPreviousMovement() {
+        return distanceFromPreviousMovement;
+    }
+
+    public void setDistanceFromPreviousMovement(Double distanceFromPreviousMovement) {
+        this.distanceFromPreviousMovement = distanceFromPreviousMovement;
     }
 
     public String getMonthName() {

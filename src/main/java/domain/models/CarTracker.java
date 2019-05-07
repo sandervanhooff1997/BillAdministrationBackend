@@ -1,7 +1,11 @@
 package domain.models;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @NamedQueries({
@@ -20,6 +24,10 @@ public class CarTracker implements Serializable {
     private String hardware;
 
     private boolean isDeleted;
+
+    @OneToMany(targetEntity = Movement.class, cascade = CascadeType.ALL)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List movements;
 
     public CarTracker() {
     }
@@ -61,6 +69,14 @@ public class CarTracker implements Serializable {
 
     public void setDeleted(boolean deleted) {
         isDeleted = deleted;
+    }
+
+    public List getMovements() {
+        return movements;
+    }
+
+    public void setMovements(List movements) {
+        this.movements = movements;
     }
 
     @Override

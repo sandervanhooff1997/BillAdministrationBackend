@@ -23,6 +23,9 @@ public class BillService {
     @EJB
     private CarTrackerService carTrackerService;
 
+    @EJB
+    private CountryService countryService;
+
     public boolean generateBills(List<Movement> movements) throws Exception {
 
         /*
@@ -105,7 +108,7 @@ public class BillService {
                     Bill b = new Bill();
                     b.setMonth(m.getMonthIndex());
                     b.setPaymentStatus(PaymentStatus.OPEN);
-                    b.setTotalAmount(calculateMileageCosts(difference));
+                    b.setTotalAmount(calculateMileageCosts(difference, v));
                     b.setCarTrackers(v.getCarTrackers());
                     b.setOwnerCredentials(v.getOwnerCredentials().get(v.getOwnerCredentials().size()-1));
 
@@ -118,8 +121,35 @@ public class BillService {
             return true;
     }
 
-    public double calculateMileageCosts (int kms) {
-        // todo: berekening met Product Owner bespreken
+    public double calculateMileageCosts (int kms, Vehicle vehicle) {
+
+        /*
+        Stap 1: Checken of de binnengekomen movements in de spits waren, of niet.
+        Stap 2: RateCategory van het betreffende voertuig ophalen.
+        Stap 3: Controleren of de movements binnen een regio vallen, anders de toenmalige weg ophalen en deze doorberekenen.
+        Stap 4: Totaalprijs berekenen op basis van bovenstaande gegevens.
+        Stap 5: Totaaltarief retourneren
+         */
+
+        Double totalPrice = 0.0;
+        List<Movement> movements = vehicle.getCarTracker().getMovements();
+        Movement previousMovement;
+
+
+        for (int i = 0; i < movements.size(); i++) {
+            //Movement object uit array ophalen, zodat deze uitgelezen kan worden.
+            Movement movement = movements.get(i);
+
+            //Controleren of de movmement wel of niet in de spits valt.
+            totalPrice = totalPrice + countryService.getRushHourRate(movement);
+
+            //Rate category ophalen van het betreffende vehicle en controleren of de laatste movement uit de cartracker van deze vehicle binnen een regio valt of
+            totalPrice = totalPrice + countryService.getTotalPricePerKilometer(vehicle);
+
+            //Vorige movement opslaan.
+            previousMovement = movement;
+        }
+
         return kms * 0.5;
     }
 
