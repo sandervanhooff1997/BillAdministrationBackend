@@ -1,5 +1,6 @@
 package domain.services;
 
+import com.snatik.polygon.Point;
 import domain.models.CountryRegion;
 import domain.models.Movement;
 import domain.models.Road;
@@ -48,19 +49,23 @@ public class CountryService {
     public Double getTotalPricePerKilometer(Vehicle vehicle) {
         Double totalPrice = 0.0;
 
+
         for (int i = 0; i < this.roads.size(); i++) {
             if (this.roads.get(i).getName() ==
                 vehicle.getCarTracker().getMovements().get(vehicle.getCarTracker().getMovements().size() -1)) {
                 totalPrice =  this.roads.get(i).getPricePerKilometer();
-            } else {
-                for(CountryRegion countryRegion : this.countryRegions) {
-                    
-                }
             }
         }
 
-        totalPrice = vehicle.getRateCategory().getPrice() + totalPrice;
+        for(CountryRegion countryRegion : this.countryRegions) {
+            Point point = (Point) vehicle.getCarTracker().getMovements().get(vehicle.getCarTracker().getMovements().size() -1);
+            if (countryRegion.getPolygon().contains(point)) {
+                totalPrice = totalPrice + countryRegion.getRateCategory().getPrice();
+            }
+        }
 
+
+        totalPrice = vehicle.getRateCategory().getPrice() + totalPrice;
         return totalPrice;
     }
 
@@ -75,7 +80,6 @@ public class CountryService {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
         return this.nonRushHourRate;
     }
 }

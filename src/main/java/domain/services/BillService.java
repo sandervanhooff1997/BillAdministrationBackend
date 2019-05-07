@@ -110,7 +110,7 @@ public class BillService {
                     b.setPaymentStatus(PaymentStatus.OPEN);
                     b.setTotalAmount(calculateMileageCosts(difference, v));
                     b.setCarTrackers(v.getCarTrackers());
-                    b.setOwnerCredentials(v.getOwnerCredentials().get(v.getOwnerCredentials().size()-1));
+                    b.setOwnerCredentials(v.getOwnerCredentials().get(v.getOwnerCredentials().size() -1));
 
                     // persist to database !!
                     create(b);
@@ -140,7 +140,7 @@ public class BillService {
             //Movement object uit array ophalen, zodat deze uitgelezen kan worden.
             Movement movement = movements.get(i);
 
-            //Controleren of de movmement wel of niet in de spits valt.
+            //Controleren of de movement wel of niet in de spits valt.
             totalPrice = totalPrice + countryService.getRushHourRate(movement);
 
             //Rate category ophalen van het betreffende vehicle en controleren of de laatste movement uit de cartracker van deze vehicle binnen een regio valt of

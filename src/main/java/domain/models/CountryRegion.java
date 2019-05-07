@@ -4,6 +4,7 @@ import com.snatik.polygon.Polygon;
 
 public class CountryRegion {
 
+    //https://github.com/sromku/polygon-contains-point
     private Polygon polygon;
     private RateCategory rateCategory;
     private String name;
