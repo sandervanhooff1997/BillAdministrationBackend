@@ -152,6 +152,26 @@ public class BillService {
         return repository.getAll();
     }
 
+    public Bill getById(Long id) {
+        return repository.getById(id);
+    }
+
+    public Bill recalculateBill(Long id) {
+        Bill b = getById(id);
+
+        if (b == null)
+            return null;
+
+        ;
+
+        /** todo: get movements by cartracker and month of bill
+         *  List<Movement></Movement> movements = movementService.getMovementsFromCarTrackersAndId(b.getCarTrackers(), b.getMonthIndex());
+         *  recalculate(movements);
+         */
+
+        return b;
+    }
+
     public List<Bill> getAllByVehicleId(Long vehicleId) {
         Vehicle v = vehicleService.getById(vehicleId);
 
