@@ -7,6 +7,7 @@ import domain.controllers.Requests.TransferOwenershipVehicleRequest;
 import domain.models.OwnerCredentials;
 import domain.models.Vehicle;
 import domain.services.VehicleService;
+import sun.jvm.hotspot.oops.Mark;
 
 import javax.ejb.EJB;
 import javax.ws.rs.*;
@@ -62,7 +63,7 @@ public class VehicleController {
     @Path("/stolen")
     @Produces("application/json")
     public Response update(MarkVehicleAsStolenRequest req) {
-        boolean success = service.markAsStolen(req.getLicencePlate(), req.isStolen());
+        boolean success = service.markAsStolen(req.getLicencePlate());
 
         return Response.ok(success).build();
     }

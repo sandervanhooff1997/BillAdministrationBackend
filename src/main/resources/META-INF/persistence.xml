@@ -6,6 +6,7 @@
              version="2.1">
     <persistence-unit name="billadministrationPU" transaction-type="JTA">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <!--<jta-data-source>jdbc/BillAdmin</jta-data-source>-->
         <jta-data-source>jdbc/billadministration</jta-data-source>
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>

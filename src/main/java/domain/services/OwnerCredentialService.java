@@ -9,7 +9,6 @@ import javax.ejb.Local;
 import javax.ejb.Stateless;
 import java.util.List;
 
-@Local
 @Stateless
 public class OwnerCredentialService {
     @EJB

@@ -1,15 +1,12 @@
 package domain.repositories;
 
-
 import domain.models.OwnerCredentials;
 
-import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
-@Local
 @Stateless
 public class OwnerCredentialRepository {
     @PersistenceContext(unitName = "billadministrationPU")

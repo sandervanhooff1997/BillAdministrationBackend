@@ -10,7 +10,6 @@ import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.List;
 
-@Local
 @Stateless
 public class CarTrackerRepository {
     @PersistenceContext(unitName = "billadministrationPU")

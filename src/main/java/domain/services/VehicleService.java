@@ -16,7 +16,6 @@ import java.security.acl.Owner;
 import java.util.*;
 import java.util.logging.Logger;
 
-@Local
 @Stateless
 public class VehicleService {
     @EJB
@@ -112,7 +111,7 @@ public class VehicleService {
         }
     }
 
-    public boolean markAsStolen(String licencePlate, boolean isStolen) {
+    public boolean markAsStolen(String licencePlate) {
         if (licencePlate.isEmpty())
             return false;
 
@@ -122,7 +121,7 @@ public class VehicleService {
             return false;
 
         // make the mark
-        v.setStolen(isStolen);
+        v.setStolen(true);
 
         repository.update(v);
         return true;

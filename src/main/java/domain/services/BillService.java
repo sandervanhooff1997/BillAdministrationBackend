@@ -10,7 +10,6 @@ import javax.ejb.Stateless;
 import javax.ws.rs.NotFoundException;
 import java.util.*;
 
-@Local
 @Stateless
 public class BillService {
 

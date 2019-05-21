@@ -9,7 +9,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
-@Local
 @Stateless
 public class RateCategoryRepository {
     @PersistenceContext(unitName = "billadministrationPU")

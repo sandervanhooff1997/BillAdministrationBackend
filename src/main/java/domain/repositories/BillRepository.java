@@ -1,19 +1,14 @@
 package domain.repositories;
 
 import domain.models.Bill;
-import domain.models.Vehicle;
 import org.hibernate.HibernateException;
 
-import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.ws.rs.NotFoundException;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-@Local
 @Stateless
 public class BillRepository {
     @PersistenceContext(unitName = "billadministrationPU")

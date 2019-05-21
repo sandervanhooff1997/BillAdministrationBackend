@@ -11,7 +11,6 @@ import javax.ejb.Stateless;
 import java.util.ArrayList;
 import java.util.List;
 
-@Local
 @Stateless
 public class CarTrackerService {
     @EJB

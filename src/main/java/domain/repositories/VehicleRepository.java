@@ -10,7 +10,6 @@ import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.List;
 
-@Local
 @Stateless
 public class VehicleRepository {
     @PersistenceContext(unitName = "billadministrationPU")
@@ -51,9 +50,7 @@ public class VehicleRepository {
     }
 
     public void update(Vehicle vehicle) {
-        em.getTransaction().begin();
         em.merge(vehicle);
-        em.getTransaction().commit();
     }
 
     public void delete(Vehicle rateCategory) {
