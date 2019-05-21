@@ -6,7 +6,7 @@ public class CountryRegion {
 
     //https://github.com/sromku/polygon-contains-point
     private Polygon polygon;
-    private RateCategory rateCategory;
+    private Double price;
     private String name;
 
     public CountryRegion() {
@@ -20,12 +20,12 @@ public class CountryRegion {
         this.polygon = polygon;
     }
 
-    public RateCategory getRateCategory() {
-        return rateCategory;
+    public Double getPrice() {
+        return price;
     }
 
-    public void setRateCategory(RateCategory rateCategory) {
-        this.rateCategory = rateCategory;
+    public void setPrice(Double price) {
+        this.price = price;
     }
 
     public String getName() {

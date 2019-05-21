@@ -1,8 +1,9 @@
 package domain.models;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 
-import java.awt.*;
+import com.snatik.polygon.Point;
+
+import java.awt.geom.Point2D;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
@@ -13,7 +14,7 @@ public class Movement implements Serializable {
     private String authorisationCode;
     private Date date;
     private CarTracker carTracker;
-    private Point coord = new Point();
+    private Point2D.Double coord;
     private Double distanceFromPreviousMovement;
 
     public Movement() {
@@ -80,11 +81,11 @@ public class Movement implements Serializable {
         return c.get(Calendar.MONTH);
     }
 
-    public Point getCoord() {
+    public Point2D.Double getCoord() {
         return coord;
     }
 
-    public void setCoord(Point coord) {
+    public void setCoord(Point2D.Double coord) {
         this.coord = coord;
     }
 }

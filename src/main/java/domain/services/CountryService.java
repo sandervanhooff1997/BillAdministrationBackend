@@ -47,8 +47,8 @@ public class CountryService {
     }
 
     public Double getTotalPricePerKilometer(Vehicle vehicle) {
-        Double totalPrice = 0.0;
 
+        Double totalPrice = 0.0;
 
         for (int i = 0; i < this.roads.size(); i++) {
             if (this.roads.get(i).getName() ==
@@ -60,7 +60,7 @@ public class CountryService {
         for(CountryRegion countryRegion : this.countryRegions) {
             Point point = (Point) vehicle.getCarTracker().getMovements().get(vehicle.getCarTracker().getMovements().size() -1);
             if (countryRegion.getPolygon().contains(point)) {
-                totalPrice = totalPrice + countryRegion.getRateCategory().getPrice();
+                totalPrice = totalPrice + countryRegion.getPrice();
             }
         }
 
@@ -74,7 +74,7 @@ public class CountryService {
         dateFormat.format(movement.getDate());
 
         try {
-            if (dateFormat.parse(dateFormat.format(movement.getDate())).after(dateFormat.parse("17:00"))){
+            if (dateFormat.parse(dateFormat.format(movement.getDate())).after(dateFormat.parse("17:00")) == true && dateFormat.parse(dateFormat.format(movement.getDate())).before(dateFormat.parse("19:00")) == true){
                 return this.rushHourRate;
             }
         } catch (ParseException e) {
