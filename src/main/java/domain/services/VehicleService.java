@@ -40,14 +40,14 @@ public class VehicleService {
         }
     }
 
-    public List<Vehicle> getAllStolen() {
+    public List<String> getAllStolenLicencePlates() {
         try {
             List<Vehicle> vehicles = repository.getAll();
-            List<Vehicle> stolen = new ArrayList<>();
+            List<String> stolen = new ArrayList<>();
 
             for (Vehicle v : vehicles) {
                 if (v.isStolen())
-                    stolen.add(v);
+                    stolen.add(v.getLicencePlate());
             }
 
             return stolen;

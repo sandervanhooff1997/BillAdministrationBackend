@@ -27,8 +27,8 @@ public class VehicleController {
     @GET
     @Path("/stolen")
     @Produces("application/json")
-    public Response getAllStolen() {
-        return Response.ok(service.getAllStolen()).build();
+    public Response getAllStolenLicencePlates() {
+        return Response.ok(service.getAllStolenLicencePlates()).build();
     }
 
     @GET
