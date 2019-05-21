@@ -82,4 +82,12 @@ public class CountryService {
         }
         return this.nonRushHourRate;
     }
+
+    public List<Road> getRoads() {
+        return roads;
+    }
+
+    public void setRoads(List<Road> roads) {
+        this.roads = roads;
+    }
 }

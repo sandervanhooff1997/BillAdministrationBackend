@@ -1,6 +1,5 @@
 package domain.models;
 
-
 import com.snatik.polygon.Point;
 
 import java.awt.geom.Point2D;
@@ -16,6 +15,8 @@ public class Movement implements Serializable {
     private CarTracker carTracker;
     private Point2D.Double coord;
     private Double distanceFromPreviousMovement;
+    private Float Distance;
+    private String road;
 
     public Movement() {
     }
@@ -68,6 +69,14 @@ public class Movement implements Serializable {
         this.distanceFromPreviousMovement = distanceFromPreviousMovement;
     }
 
+    public Float getDistance() {
+        return Distance;
+    }
+
+    public void setDistance(Float distance) {
+        Distance = distance;
+    }
+
     public String getMonthName() {
         Calendar c = Calendar.getInstance();
         c.setTime(new Date());
@@ -87,5 +96,13 @@ public class Movement implements Serializable {
 
     public void setCoord(Point2D.Double coord) {
         this.coord = coord;
+    }
+
+    public String getRoad() {
+        return road;
+    }
+
+    public void setRoad(String road) {
+        this.road = road;
     }
 }
