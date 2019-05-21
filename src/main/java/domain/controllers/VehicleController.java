@@ -1,5 +1,6 @@
 package domain.controllers;
 
+import domain.controllers.Requests.ChangeCarTrackerVehicleRequest;
 import domain.controllers.Requests.CreateVehicleRequest;
 import domain.controllers.Requests.MarkVehicleAsStolenRequest;
 import domain.controllers.Requests.TransferOwenershipVehicleRequest;
@@ -48,6 +49,13 @@ public class VehicleController {
     @Produces("application/json")
     public Response transferOwnership(TransferOwenershipVehicleRequest req) {
         return Response.ok(service.transferOwnership(req.getVehicleId(), req.getOcId())).build();
+    }
+
+    @PUT
+    @Path("/changecartracker")
+    @Produces("application/json")
+    public Response changeCarTracker(ChangeCarTrackerVehicleRequest req) {
+        return Response.ok(service.changeCarTracker(req.getVehicleId(), req.getCtId())).build();
     }
 
     @PUT

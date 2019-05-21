@@ -93,7 +93,7 @@ public class Vehicle implements Serializable {
     }
 
     public CarTracker getCarTracker() {
-        return (CarTracker) carTrackers.get(carTrackers.size()-1);
+        return carTrackers.get(carTrackers.size()-1);
     }
 
     public void setCarTrackers(List<CarTracker> carTrackers) {

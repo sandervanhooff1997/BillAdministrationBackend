@@ -6,7 +6,6 @@ import domain.services.BillService;
 import javax.ejb.EJB;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
 import java.util.List;
 
 @Path("bill")
@@ -19,6 +18,13 @@ public class BillController {
     @Produces("application/json")
     public Response getAll() {
         return Response.ok(service.getAll()).build();
+    }
+
+    @GET
+    @Path("/{id}/recalculate")
+    @Produces("application/json")
+    public Response recalculateBill(@PathParam("id") Long id) {
+        return Response.ok(service.recalculateBill(id)).build();
     }
 
     @GET

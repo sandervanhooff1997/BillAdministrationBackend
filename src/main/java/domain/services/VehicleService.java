@@ -152,6 +152,22 @@ public class VehicleService {
         return update(v);
     }
 
+    public boolean changeCarTracker (Long vId, Long ctId) {
+        CarTracker ct = carTrackerService.getById(ctId);
+
+        if (ct == null)
+            return false;
+
+        Vehicle v = getById(vId);
+
+        if (v == null)
+            return false;
+
+        v.getCarTrackers().add(ct);
+
+        return update(v);
+    }
+
     public boolean delete(Long id) {
         Vehicle vehicle = repository.getById(id);
 
