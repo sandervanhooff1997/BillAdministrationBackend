@@ -4,10 +4,8 @@ import domain.controllers.Requests.ChangeCarTrackerVehicleRequest;
 import domain.controllers.Requests.CreateVehicleRequest;
 import domain.controllers.Requests.MarkVehicleAsStolenRequest;
 import domain.controllers.Requests.TransferOwenershipVehicleRequest;
-import domain.models.OwnerCredentials;
 import domain.models.Vehicle;
 import domain.services.VehicleService;
-import sun.jvm.hotspot.oops.Mark;
 
 import javax.ejb.EJB;
 import javax.ws.rs.*;
