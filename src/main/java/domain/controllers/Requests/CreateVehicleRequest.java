@@ -1,5 +1,7 @@
 package domain.controllers.Requests;
 
+import domain.models.OwnerCredentials;
+
 public class CreateVehicleRequest {
     private String licencePlate;
 

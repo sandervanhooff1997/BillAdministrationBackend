@@ -1,7 +1,6 @@
 package domain.controllers;
 
-import domain.models.Bill;
-import domain.models.Movement;
+import domain.models.*;
 import domain.services.BillService;
 
 import javax.ejb.EJB;

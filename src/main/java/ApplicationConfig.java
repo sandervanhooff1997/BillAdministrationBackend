@@ -1,5 +1,3 @@
-package domain;
-
 import javax.ws.rs.core.Application;
 
 @javax.ws.rs.ApplicationPath("")

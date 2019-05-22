@@ -3,9 +3,11 @@ package domain.repositories;
 import domain.models.Vehicle;
 import org.hibernate.HibernateException;
 
+import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.ArrayList;
 import java.util.List;
 
 @Stateless
@@ -53,12 +55,5 @@ public class VehicleRepository {
 
     public void delete(Vehicle rateCategory) {
         em.remove(rateCategory);
-    }
-
-    @Override
-    public String toString() {
-        return "VehicleRepository{" +
-                "em=" + em +
-                '}';
     }
 }

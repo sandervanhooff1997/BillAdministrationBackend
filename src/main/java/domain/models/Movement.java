@@ -1,5 +1,7 @@
 package domain.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.awt.*;
 import java.io.Serializable;
 import java.util.Calendar;

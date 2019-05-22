@@ -5,12 +5,10 @@ import domain.models.Comparators.MovementComparer;
 import domain.repositories.BillRepository;
 
 import javax.ejb.EJB;
+import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ws.rs.NotFoundException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Stateless
 public class BillService {
@@ -49,27 +47,27 @@ public class BillService {
                 String licencePlate = v.getLicencePlate();
 
                 // see if this car already exists
-//                CarMovements carMovement = carMovements
-//                        .stream()
-//                        .filter( x -> x.getLicencePlate().equals(licencePlate))
-//                        .findFirst()
-//                        .orElse( null );
-//
-//                boolean isNew = false;
-//
-//                // new car
-//                if (carMovement == null){
-//                    isNew = true;
-//                    carMovement = new CarMovements(licencePlate);
-//                }
-//
-//                // add movement to this car
-//                carMovement.addMovement( m );
-//
-//                if (isNew) {
-//                    // add new list item to carmovements
-//                    carMovements.add( carMovement );
-//                }
+                CarMovements carMovement = carMovements
+                        .stream()
+                        .filter( x -> x.getLicencePlate().equals(licencePlate))
+                        .findFirst()
+                        .orElse( null );
+
+                boolean isNew = false;
+
+                // new car
+                if (carMovement == null){
+                    isNew = true;
+                    carMovement = new CarMovements(licencePlate);
+                }
+
+                // add movement to this car
+                carMovement.addMovement( m );
+
+                if (isNew) {
+                    // add new list item to carmovements
+                    carMovements.add( carMovement );
+                }
             }
         }
 
@@ -105,7 +103,7 @@ public class BillService {
                     // create the bill
                     Bill b = new Bill();
                     b.setMonth(m.getMonthIndex());
-                    b.setPaymentStatus( PaymentStatus.OPEN);
+                    b.setPaymentStatus(PaymentStatus.OPEN);
                     b.setTotalAmount(calculateMileageCosts(difference));
                     b.setCarTrackers(v.getCarTrackers());
                     b.setOwnerCredentials(v.getOwnerCredentials().get(v.getOwnerCredentials().size()-1));

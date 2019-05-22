@@ -1,12 +1,17 @@
 package domain.models;
 
+//import com.sun.istack.NotNull;
+
 import com.sun.istack.internal.NotNull;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+//import javax.validation.constraints.PositiveOrZero;
+//import java.util.Date;
 
 @Entity
 @NamedQueries({
