@@ -10,6 +10,8 @@ public class CarMovements {
     private List<Movement>  movements;
     private Map<String, List<Movement>> monthMovements;
 
+    public CarMovements() {}
+
     public CarMovements(String licencePlate) {
         this.licencePlate = licencePlate;
         movements = new ArrayList<>(  );

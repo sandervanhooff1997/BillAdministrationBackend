@@ -2,13 +2,8 @@ package domain.models;
 
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
-
-import javax.enterprise.inject.Default;
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import java.io.Serializable;
-import java.security.acl.Owner;
 import java.util.ArrayList;
 import java.util.List;
 

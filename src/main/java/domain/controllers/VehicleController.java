@@ -4,10 +4,8 @@ import domain.controllers.Requests.ChangeCarTrackerVehicleRequest;
 import domain.controllers.Requests.CreateVehicleRequest;
 import domain.controllers.Requests.MarkVehicleAsStolenRequest;
 import domain.controllers.Requests.TransferOwenershipVehicleRequest;
-import domain.models.OwnerCredentials;
 import domain.models.Vehicle;
 import domain.services.VehicleService;
-import sun.jvm.hotspot.oops.Mark;
 
 import javax.ejb.EJB;
 import javax.ws.rs.*;
@@ -23,6 +21,19 @@ public class VehicleController {
     @Produces("application/json")
     public Response getAll() {
         return Response.ok(service.getAll()).build();
+    }
+
+    @GET
+    @Path("/ok")
+    @Produces("application/json")
+    public Response getOkResponse() {
+
+        String message = "SANDER !!!!!!!!";
+
+        return Response
+                .status(Response.Status.OK)
+                .entity(message)
+                .build();
     }
 
     @GET

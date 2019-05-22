@@ -8,13 +8,10 @@ import domain.repositories.VehicleRepository;
 import org.hibernate.HibernateException;
 
 import javax.ejb.EJB;
-import javax.ejb.Local;
 import javax.ejb.Stateless;
-import java.lang.reflect.Array;
-import java.math.BigDecimal;
-import java.security.acl.Owner;
-import java.util.*;
-import java.util.logging.Logger;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Stateless
 public class VehicleService {
@@ -196,5 +193,15 @@ public class VehicleService {
         update(v);
 
         return true;
+    }
+
+    @Override
+    public String toString() {
+        return "VehicleService{" +
+                "repository=" + repository +
+                ", carTrackerService=" + carTrackerService +
+                ", rateCategoryService=" + rateCategoryService +
+                ", ownerCredentialService=" + ownerCredentialService +
+                '}';
     }
 }

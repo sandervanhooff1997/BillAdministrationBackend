@@ -1,6 +1,5 @@
-package domain.models.Comparators;
+package domain.models;
 
-import domain.models.Movement;
 import java.util.Comparator;
 
 public class MovementComparer implements Comparator<Movement> {
