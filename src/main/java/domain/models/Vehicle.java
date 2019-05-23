@@ -1,5 +1,7 @@
 package domain.models;
 
+import com.sun.istack.internal.NotNull;
+import domain.models.enumerators.VehicleTypeEnum;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -11,6 +13,8 @@ import java.io.Serializable;
 import java.security.acl.Owner;
 import java.util.ArrayList;
 import java.util.List;
+
+import static javax.persistence.EnumType.STRING;
 
 @Entity
 @NamedQueries({
@@ -28,8 +32,10 @@ public class Vehicle implements Serializable {
 
     private boolean isStolen;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    private RateCategory rateCategory;
+    @NotNull
+    @Enumerated(STRING)
+    @Column(nullable = false)
+    private Enum<VehicleTypeEnum> vehicleType;
 
     @OneToMany(targetEntity = CarTracker.class, cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
@@ -62,14 +68,6 @@ public class Vehicle implements Serializable {
 
     public void setLicencePlate(String licencePlate) {
         this.licencePlate = licencePlate;
-    }
-
-    public RateCategory getRateCategory() {
-        return rateCategory;
-    }
-
-    public void setRateCategory(RateCategory rateCategory) {
-        this.rateCategory = rateCategory;
     }
 
     public List<OwnerCredentials> getOwnerCredentials() {
@@ -108,12 +106,21 @@ public class Vehicle implements Serializable {
         isStolen = stolen;
     }
 
+    public Enum<VehicleTypeEnum> getVehicleType() {
+        return vehicleType;
+    }
+
+    public void setVehicleType(Enum<VehicleTypeEnum> vehicleType) {
+        this.vehicleType = vehicleType;
+    }
+
     @Override
     public String toString() {
         return "Vehicle{" +
                 "id=" + id +
                 ", licencePlate='" + licencePlate + '\'' +
-                ", rateCategory=" + rateCategory +
+                ", isStolen=" + isStolen +
+                ", vehicleType=" + vehicleType +
                 ", carTrackers=" + carTrackers +
                 ", ownerCredentials=" + ownerCredentials +
                 '}';

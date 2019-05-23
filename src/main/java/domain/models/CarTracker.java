@@ -6,7 +6,8 @@ import java.io.Serializable;
 @Entity
 @NamedQueries({
         @NamedQuery(name = "CarTracker.getById", query = "select ct from CarTracker ct where ct.id = :id"),
-        @NamedQuery(name = "CarTracker.getAll", query = "select ct from CarTracker ct")
+        @NamedQuery(name = "CarTracker.getAll", query = "select ct from CarTracker ct"),
+        @NamedQuery(name = "CarTracker.getAllNotDeleted", query = "select ct from CarTracker ct where ct.isDeleted = false")
 })
 @Table(name = "cartrackers")
 public class CarTracker implements Serializable {

@@ -25,7 +25,7 @@ public class BillRepository {
             throw new NotFoundException("Bill could not be found");
 
         // update payment status
-        b.setPaymentStatus(bill.getPaymentStatus());
+        b.setPaymentStatusType(bill.getPaymentStatusType());
     }
 
 

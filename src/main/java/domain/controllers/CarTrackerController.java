@@ -26,6 +26,13 @@ public class CarTrackerController {
         return Response.ok(service.getAllUnused()).build();
     }
 
+    @GET
+    @Path("/notdeleted")
+    @Produces("application/json")
+    public Response getAllNotDeleted() {
+        return Response.ok(service.getAllNotDeleted()).build();
+    }
+
     @POST
     @Consumes("application/json")
     @Produces("application/json")

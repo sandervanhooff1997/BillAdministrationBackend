@@ -28,6 +28,16 @@ public class CarTrackerRepository {
 
     }
 
+    public List<CarTracker> getAllNotDeleted() {
+        try {
+            return em.createNamedQuery("CarTracker.getAllNotDeleted", CarTracker.class).getResultList();
+        } catch (Exception ex){
+            System.out.println(ex.getMessage());
+            return null;
+        }
+
+    }
+
     public CarTracker getById(Long id) {
         try {
             return em.createNamedQuery("CarTracker.getById", CarTracker.class).setParameter("id", id).getSingleResult();

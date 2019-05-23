@@ -2,10 +2,10 @@ package domain.services;
 
 import domain.models.*;
 import domain.models.Comparators.MovementComparer;
+import domain.models.enumerators.PaymentStatusType;
 import domain.repositories.BillRepository;
 
 import javax.ejb.EJB;
-import javax.ejb.Local;
 import javax.ejb.Stateless;
 import javax.ws.rs.NotFoundException;
 import java.util.*;
@@ -103,7 +103,7 @@ public class BillService {
                     // create the bill
                     Bill b = new Bill();
                     b.setMonth(m.getMonthIndex());
-                    b.setPaymentStatus(PaymentStatus.OPEN);
+                    b.setPaymentStatusType(PaymentStatusType.OPEN);
                     b.setTotalAmount(calculateMileageCosts(difference));
                     b.setCarTrackers(v.getCarTrackers());
                     b.setOwnerCredentials(v.getOwnerCredentials().get(v.getOwnerCredentials().size()-1));
@@ -126,7 +126,7 @@ public class BillService {
         if (bill == null)
             return false;
 
-        if (bill.getId() == null || bill.getPaymentStatus() == null)
+        if (bill.getId() == null || bill.getPaymentStatusType() == null)
             return false;
 
         try {

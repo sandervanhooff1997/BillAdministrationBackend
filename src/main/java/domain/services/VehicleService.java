@@ -93,9 +93,9 @@ public class VehicleService {
             v.addOwnerCredentials(oc);
         }
 
-        RateCategory rc = rateCategoryService.getById(rateCategoryId);
-        if (rc != null)
-            v.setRateCategory(rc);
+//        RateCategory rc = rateCategoryService.getById(rateCategoryId);
+//        if (rc != null)
+//            v.setRateCategory(rc);
 
         CarTracker ct = carTrackerService.getById(carTrackerId);
         if (ct != null)

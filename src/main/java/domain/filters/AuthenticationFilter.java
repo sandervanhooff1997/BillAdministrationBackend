@@ -25,9 +25,8 @@ public class AuthenticationFilter implements ContainerRequestFilter {
     public void filter(ContainerRequestContext requestContext) throws IOException {
         // ignore /auth requests
         UriInfo info = requestContext.getUriInfo();
-        System.out.println("REQUEST METHOD: " +  requestContext.getMethod());
 
-        if (info.getPath().contains("authentication") || requestContext.getMethod().equals("OPTIONS"))
+        if (info.getPath().contains("authentication") || requestContext.getMethod().equals("OPTIONS") || requestContext.getHeaderString("x-api") != null)
             return;
 
         // Get the Authorization header from the request

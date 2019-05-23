@@ -36,6 +36,10 @@ public class CarTrackerService {
         return carTrackers;
     }
 
+    public List<CarTracker> getAllNotDeleted() {
+        return repository.getAllNotDeleted();
+    }
+
     public CarTracker getById(Long id) {
         return repository.getById(id);
     }
