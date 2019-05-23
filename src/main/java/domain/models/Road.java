@@ -2,7 +2,8 @@ package domain.models;
 
 public class Road {
     private String name;
-    private Double pricePerKilometer;
+    private Price pricePerKilometer;
+    private Price rushHourPricePerKilometer;
 
     public Road() {
     }
@@ -15,11 +16,19 @@ public class Road {
         this.name = name;
     }
 
-    public Double getPricePerKilometer() {
+    public Price getPricePerKilometer() {
         return pricePerKilometer;
     }
 
-    public void setPricePerKilometer(Double pricePerKilometer) {
+    public void setPricePerKilometer(Price pricePerKilometer) {
         this.pricePerKilometer = pricePerKilometer;
+    }
+
+    public Price getRushHourPricePerKilometer() {
+        return rushHourPricePerKilometer;
+    }
+
+    public void setRushHourPricePerKilometer(Price rushHourPricePerKilometer) {
+        this.rushHourPricePerKilometer = rushHourPricePerKilometer;
     }
 }
