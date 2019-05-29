@@ -1,32 +1,36 @@
 package domain.models;
 
-import com.snatik.polygon.Point;
-
 import java.awt.geom.Point2D;
-import java.io.Serializable;
-import java.util.Calendar;
 import java.util.Date;
 
-public class Movement implements Serializable {
+public class Movement {
+
     private Long id;
-    private Long serialNumber;
-    private String authorisationCode;
+
+    private String serialNumber;
+
+    private String address;
+
+    private Point2D.Double coordinate;
+
+    private String authCode;
+
     private Date date;
-    private CarTracker carTracker;
-    private Point2D.Double coord;
-    private Double distanceFromPreviousMovement;
-    private Float Distance;
-    private String road;
+
+    private Long carTrackerId;
+
+    private Double distance;
 
     public Movement() {
     }
 
-    public CarTracker getCarTracker() {
-        return carTracker;
+    public Movement(String serialNumber, Long carTracker) {
+        this.serialNumber = serialNumber;
+        this.carTrackerId = carTracker;
     }
 
-    public void setCarTracker(CarTracker carTracker) {
-        this.carTracker = carTracker;
+    public Movement(String serialNumber) {
+        this.serialNumber = serialNumber;
     }
 
     public Long getId() {
@@ -37,20 +41,36 @@ public class Movement implements Serializable {
         this.id = id;
     }
 
-    public Long getSerialNumber() {
+    public String getSerialNumber() {
         return serialNumber;
     }
 
-    public void setSerialNumber(Long serialNumber) {
+    public void setSerialNumber(String serialNumber) {
         this.serialNumber = serialNumber;
     }
 
-    public String getAuthorisationCode() {
-        return authorisationCode;
+    public String getAddress() {
+        return address;
     }
 
-    public void setAuthorisationCode(String authorisationCode) {
-        this.authorisationCode = authorisationCode;
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public Point2D.Double getCoordinate() {
+        return coordinate;
+    }
+
+    public void setCoordinate(Point2D.Double coordinate) {
+        this.coordinate = coordinate;
+    }
+
+    public String getAuthCode() {
+        return authCode;
+    }
+
+    public void setAuthCode(String authCode) {
+        this.authCode = authCode;
     }
 
     public Date getDate() {
@@ -61,48 +81,33 @@ public class Movement implements Serializable {
         this.date = date;
     }
 
-    public Double getDistanceFromPreviousMovement() {
-        return distanceFromPreviousMovement;
+    public Long getCarTrackerId() {
+        return carTrackerId;
     }
 
-    public void setDistanceFromPreviousMovement(Double distanceFromPreviousMovement) {
-        this.distanceFromPreviousMovement = distanceFromPreviousMovement;
+    public void setCarTrackerId(Long carTrackerId) {
+        this.carTrackerId = carTrackerId;
     }
 
-    public Float getDistance() {
-        return Distance;
+    public Double getDistance() {
+        return distance;
     }
 
-    public void setDistance(Float distance) {
-        Distance = distance;
+    public void setDistance(Double distance) {
+        this.distance = distance;
     }
 
-    public String getMonthName() {
-        Calendar c = Calendar.getInstance();
-        c.setTime(new Date());
-        int month = c.get(Calendar.MONTH);
-        return String.valueOf( month );
-    }
-
-    public int getMonthIndex() {
-        Calendar c = Calendar.getInstance();
-        c.setTime(new Date());
-        return c.get(Calendar.MONTH);
-    }
-
-    public Point2D.Double getCoord() {
-        return coord;
-    }
-
-    public void setCoord(Point2D.Double coord) {
-        this.coord = coord;
-    }
-
-    public String getRoad() {
-        return road;
-    }
-
-    public void setRoad(String road) {
-        this.road = road;
+    @Override
+    public String toString() {
+        return "Movement{" +
+                "id=" + id +
+                ", serialNumber='" + serialNumber + '\'' +
+                ", address='" + address + '\'' +
+                ", coordinate=" + coordinate +
+                ", authCode='" + authCode + '\'' +
+                ", date=" + date +
+                ", carTrackerId=" + carTrackerId +
+                ", distance=" + distance +
+                '}';
     }
 }

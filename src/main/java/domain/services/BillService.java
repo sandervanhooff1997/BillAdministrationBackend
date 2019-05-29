@@ -1,14 +1,21 @@
 package domain.services;
 
+import domain.enums.VehicleType;
 import domain.models.*;
-import domain.models.Comparators.MovementComparer;
+import domain.models.Bill;
+import domain.models.CarMovements;
 import domain.repositories.BillRepository;
+import domain.utils.DateUtils;
+import sun.security.pkcs.ParsingException;
 
 import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
-import javax.ws.rs.NotFoundException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Local
 @Stateless
@@ -21,136 +28,168 @@ public class BillService {
     private VehicleService vehicleService;
 
     @EJB
-    private CarTrackerService carTrackerService;
+    private RoadService roadService;
 
-    @EJB
-    private CountryService countryService;
+    /**
+     * Sort all movements by account rider and car
+     */
+    public List<CarMovements> sortMovements(List<Movement> movements) {
+        if (movements == null)
+            return null;
 
-    public boolean generateBills(List<Movement> movements) throws Exception {
-
-        /*
-         * Voor elke maand, voor elke auto, een rekening opstellen.
-         * Stap 1: Filter movements per auto
-         * Stap 2: Filter movements van de auto voor een specifieke maand.
-         * Stap 3: rekening aanmaken voor de gereden kilometers uit de movements
-         * */
-
-        if (movements == null) {
-            return false;
-        }
-
-        // list with all distinct cars and their movements
+        // list with distinct cars and their movements
         List<CarMovements> carMovements = new ArrayList<>();
 
         for (Movement m : movements) {
+            // select the corrosponding vehicle
+            Vehicle vehicle = vehicleService.getByCarTrackerId(m.getCarTrackerId());
 
-            // get vehicle with the cartracker in the movement
-            Vehicle v = vehicleService.getByCarTrackerId(m.getCarTracker().getId());
+            // skip movement if no vehicle was found
+            if (vehicle == null) continue;
 
-            if (v != null) {
-                String licencePlate = v.getLicencePlate();
+            // get the owner at the time of this movement
+            OwnerCredentials currentOwner = vehicle.getOwnerCredentialsOnDate(m.getDate());
 
-                // see if this car already exists
-                CarMovements carMovement = carMovements
-                        .stream()
-                        .filter( x -> x.getLicencePlate().equals(licencePlate))
-                        .findFirst()
-                        .orElse( null );
+            Long currentOwnerId = currentOwner.getId();
+            Long vehicleId = vehicle.getId();
 
-                boolean isNew = false;
+            // see if this car already exists
+            CarMovements carMovement = carMovements
+                    .stream()
+                    .filter(x -> x.getVehicle().getId().equals(vehicleId) && x.getOwnerCredentials().getId().equals(currentOwnerId))
+                    .findFirst()
+                    .orElse(null);
 
-                // new car
-                if (carMovement == null){
-                    isNew = true;
-                    carMovement = new CarMovements(licencePlate);
-                }
+            boolean isNew = false;
 
-                // add movement to this car
-                carMovement.addMovement( m );
+            // new car & owner
+            if (carMovement == null){
+                isNew = true;
+                carMovement = new CarMovements(vehicle, currentOwner);
+            }
 
-                if (isNew) {
-                    // add new list item to carmovements
-                    carMovements.add( carMovement );
-                }
+            // add movement to this car
+            carMovement.addMovement( m );
+
+            if (isNew) {
+                // add new list item to carmovements
+                carMovements.add( carMovement );
             }
         }
+
+        return carMovements;
+    }
+
+    /**
+     * - Spitstarief per weg - DONE
+     * - Verschillende tarieven op 1 weg —> tot datum X tarief X, vanaf datum Y tarief Y - DONE
+     * - Verschillende eigenaren —> 2 rekeningen naar beide eigenaren DONE
+     * - Verschillende type auto’s —> wordt over het totaalbedrag berekend - DONE
+     */
+    public List<Bill> generateBills(List<Movement> movements) throws Exception {
+        List<CarMovements> carMovements = sortMovements(movements);
+        if (carMovements == null) throw new Exception("Invalid data");
+
+        List<Road> roads = roadService.getAll();
+        if (roads == null) throw new Exception("Invalid data");
+
+        return makeBills(carMovements, roads);
+    }
+
+    private List<Bill> makeBills(List<CarMovements> carMovements, List<Road> roads) {
+        List<Bill> bills = new ArrayList<>();
 
         // for each car with all its movements
         for (CarMovements cm : carMovements) {
-
-            // for each month of movements for the current car
-            for (Map.Entry<String, List<Movement>> monthCm: cm.getMonthMovements().entrySet()) {
-
-                // get the list of movements for this month
-                List<Movement> monthMovements = monthCm.getValue();
-
-                // get the movement with the highest mileage on the cartracker
-                Movement m = Collections.max(monthMovements, new MovementComparer());
-
-                // get carTracker from database
-                CarTracker ct = carTrackerService.getById(m.getCarTracker().getId());
-
-                // calculate difference
-                if (ct != null) {
-                    int current = ct.getMileage();
-                    int target = m.getCarTracker().getMileage();
-                    int difference = target - current;
-
-                    if (difference < 0) {
-                        throw new Exception("A car can\'t go back in mileage");
-                    }
-
-                    Vehicle v = vehicleService.getByLicencePlate(cm.getLicencePlate());
-                    if (v == null)
-                        throw new NotFoundException("Vehicle with licenceplate " + cm.getLicencePlate() + " not found.");
-
-                    // create the bill
-                    Bill b = new Bill();
-                    b.setMonth(m.getMonthIndex());
-                    b.setPaymentStatus(PaymentStatus.OPEN);
-                    b.setTotalAmount(calculateMileageCosts(difference, v));
-                    b.setCarTrackers(v.getCarTrackers());
-                    b.setOwnerCredentials(v.getOwnerCredentials().get(v.getOwnerCredentials().size() -1));
-
-                    // persist to database !!
-                    create(b);
-                }
-            }
+            Bill b = makeBill(cm, roads);
+            if (b != null) bills.add(b);
         }
 
-            return true;
+        return bills;
     }
 
-    public double calculateMileageCosts (int kms, Vehicle vehicle) {
+    private Bill makeBill (CarMovements cm, List<Road> roads) {
+        // calculate difference
+        // create the bill
+        Bill b = new Bill();
+        b.setMonth(DateUtils.getMonthIndex(cm.getMovements().get(0).getDate()));
 
-        /*
-        Stap 1: Checken of de binnengekomen movements in de spits waren, of niet.
-        Stap 2: RateCategory van het betreffende voertuig ophalen.
-        Stap 3: Controleren of de movements binnen een regio vallen, anders de toenmalige weg ophalen en deze doorberekenen.
-        Stap 4: Totaalprijs berekenen op basis van bovenstaande gegevens.
-        Stap 5: Totaaltarief retourneren
-         */
+        for (Movement m : cm.getMovements()) {
+            // find the road
+            Road r = roads
+                    .stream()
+                    .filter( x -> x.getName().equals(m.getAddress()))
+                    .findFirst()
+                    .orElse( null );
 
-        Double totalPrice = 0.0;
-        List<Movement> movements = vehicle.getCarTracker().getMovements();
-        Movement previousMovement;
+            boolean inRushHour = false;
+            try {
+                inRushHour = isRushHour(m.getDate());
+            } catch (Exception e) {
 
+            }
 
-        for (int i = 0; i < movements.size(); i++) {
-            //Movement object uit array ophalen, zodat deze uitgelezen kan worden.
-            Movement movement = movements.get(i);
-
-            //Controleren of de movement wel of niet in de spits valt.
-            totalPrice = totalPrice + countryService.getRushHourRate(movement);
-
-            //Rate category ophalen van het betreffende vehicle en controleren of de laatste movement uit de cartracker van deze vehicle binnen een regio valt of
-            totalPrice = totalPrice + countryService.getTotalPricePerKilometer(vehicle);
-
-            //Vorige movement opslaan.
-            previousMovement = movement;
+            b.setTotalAmount(calculateTaxes(m, r, inRushHour));
         }
 
-        return kms * 0.5;
+        b.setTotalAmount(applyVehicleTypeFactor(cm.getVehicle().getVehicleType(), b.getTotalAmount()));
+        b.setPaymentStatus(PaymentStatus.OPEN);
+
+
+        if (cm.getVehicle().getCarTrackers().size() > 0) {
+            b.setCarTrackers(getCarTrackersInCarMovements(cm));
+        }
+
+        if (cm.getVehicle().getOwnerCredentials().size() > 0)
+            b.setOwnerCredentials(cm.getOwnerCredentials());
+
+        // persist & return
+        create(b);
+        return b;
+    }
+
+    private List<CarTracker> getCarTrackersInCarMovements(CarMovements cm) {
+        // get the max date of movements in this set
+        Date maxDate = cm.getMovements().stream().map(x -> x.getDate()).max(Date::compareTo).get();
+
+        // get all active cartrackers for this movements
+        return cm
+                .getVehicle()
+                .getCarTrackers()
+                .stream()
+                .filter( x -> x.getDeletedOn() == null || x.getDeletedOn().after(maxDate))
+                .collect(Collectors.toList());
+
+    }
+
+    private Double applyVehicleTypeFactor (VehicleType type, Double amount) {
+        Double multiplier = vehicleService.getVehicleTypeMultiplier(type);
+        return amount * multiplier;
+    }
+
+    private Double calculateTaxes (Movement m, Road r, boolean inRushHour) {
+        // if no road was found, apply default rates
+        if (r == null && inRushHour) return m.getDistance() * roadService.getDefaultRushHourKilometerRate();
+        if (r == null) return m.getDistance() * roadService.getDefaultKilometerRate();
+
+        if (inRushHour) {
+            // rush hour for found road
+            Price p = r.getMovementRushHourPrice(m.getDate());
+            if (p == null) return m.getDistance() * roadService.getDefaultRushHourKilometerRate();
+            return m.getDistance() * p.getPrice();
+        }
+
+        // default rate for found road
+        Price p = r.getMovementPrice(m.getDate());
+        if (p == null) return m.getDistance() * roadService.getDefaultKilometerRate();
+        return m.getDistance() * p.getPrice();
+    }
+
+    private boolean isRushHour(Date d) throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm") ;
+
+        return dateFormat.parse(dateFormat.format(d)).after(dateFormat.parse("17:00"))
+                && dateFormat.parse(dateFormat.format(d)).before(dateFormat.parse("19:00"));
     }
 
     public boolean changePaymenStatus (Bill bill) {

@@ -1,20 +1,15 @@
 package domain.services;
 
-import com.snatik.polygon.Point;
-import domain.models.CountryRegion;
 import domain.models.Movement;
+import domain.models.CountryRegion;
 import domain.models.Road;
 import domain.models.Vehicle;
 
-import javax.ejb.Local;
-import javax.ejb.Stateless;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-@Local
-@Stateless
 public class CountryService {
 
     private List<CountryRegion> countryRegions;
@@ -50,7 +45,7 @@ public class CountryService {
         for (int i = 0; i < this.roads.size(); i++) {
             if (this.roads.get(i).getName() ==
                 vehicle.getCarTracker().getMovements().get(vehicle.getCarTracker().getMovements().size() -1)) {
-                totalPrice =  this.roads.get(i).getPricePerKilometer().getPrice();
+//                totalPrice =  this.roads.get(i).getPricePerKilometer().getPrice();
             }
         }
 
@@ -80,19 +75,19 @@ public class CountryService {
         return totalPrice;
     }
 
-//    public Double getRushHourRate(Movement movement) {
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm") ;
-//        dateFormat.format(movement.getDate());
-//
-//        try {
-//            if (dateFormat.parse(dateFormat.format(movement.getDate())).after(dateFormat.parse("17:00")) == true && dateFormat.parse(dateFormat.format(movement.getDate())).before(dateFormat.parse("19:00")) == true){
-//                return this.rushHourRate;
-//            }
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//        return this.nonRushHourRate;
-//    }
+    public Double getRushHourRate(Movement movement) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm") ;
+        dateFormat.format(movement.getDate());
+
+        try {
+            if (dateFormat.parse(dateFormat.format(movement.getDate())).after(dateFormat.parse("17:00")) == true && dateFormat.parse(dateFormat.format(movement.getDate())).before(dateFormat.parse("19:00")) == true){
+                return this.rushHourRate;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return this.nonRushHourRate;
+    }
 
     public List<Road> getRoads() {
         return roads;

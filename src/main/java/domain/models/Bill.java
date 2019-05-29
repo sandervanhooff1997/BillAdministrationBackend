@@ -1,6 +1,9 @@
 package domain.models;
 
 import com.sun.istack.internal.NotNull;
+import domain.models.CarTracker;
+import domain.models.OwnerCredentials;
+import domain.models.PaymentStatus;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -109,6 +112,10 @@ public class Bill implements Serializable {
 
     public void setTotalAmount(Double totalAmount) {
         this.totalAmount = totalAmount;
+    }
+
+    public void addTotalAmount(Double totalAmount) {
+        this.totalAmount += totalAmount;
     }
 
     public int getMonthIndex() {

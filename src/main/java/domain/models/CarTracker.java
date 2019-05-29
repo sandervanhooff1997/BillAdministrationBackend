@@ -5,6 +5,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -25,8 +26,9 @@ public class CarTracker implements Serializable {
 
     private boolean isDeleted;
 
-    @OneToMany(targetEntity = Movement.class, cascade = CascadeType.ALL)
-    @LazyCollection(LazyCollectionOption.FALSE)
+    private Date deletedOn;
+
+    @Transient
     private List movements;
 
     public CarTracker() {
@@ -77,6 +79,14 @@ public class CarTracker implements Serializable {
 
     public void setMovements(List movements) {
         this.movements = movements;
+    }
+
+    public Date getDeletedOn() {
+        return deletedOn;
+    }
+
+    public void setDeletedOn(Date deletedOn) {
+        this.deletedOn = deletedOn;
     }
 
     @Override

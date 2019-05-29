@@ -1,24 +1,23 @@
 package domain.models;
 
-import com.snatik.polygon.Polygon;
 
 public class CountryRegion {
 
     //https://github.com/sromku/polygon-contains-point
-    private Polygon polygon;
+//    private Polygon polygon;
     private Double price;
     private String name;
 
     public CountryRegion() {
     }
 
-    public Polygon getPolygon() {
-        return polygon;
-    }
-
-    public void setPolygon(Polygon polygon) {
-        this.polygon = polygon;
-    }
+//    public Polygon getPolygon() {
+//        return polygon;
+//    }
+//
+//    public void setPolygon(Polygon polygon) {
+//        this.polygon = polygon;
+//    }
 
     public Double getPrice() {
         return price;

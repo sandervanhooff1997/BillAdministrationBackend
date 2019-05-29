@@ -1,5 +1,7 @@
 package domain.models;
 
+import com.sun.istack.internal.NotNull;
+import domain.enums.VehicleType;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -10,7 +12,10 @@ import javax.validation.constraints.Min;
 import java.io.Serializable;
 import java.security.acl.Owner;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import static javax.persistence.EnumType.STRING;
 
 @Entity
 @NamedQueries({
@@ -38,6 +43,11 @@ public class Vehicle implements Serializable {
     @OneToMany(targetEntity = OwnerCredentials.class, cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<OwnerCredentials> ownerCredentials;
+
+    @NotNull
+    @Enumerated(STRING)
+    @Column(nullable = false)
+    private VehicleType vehicleType = VehicleType.COMBUSTION;
 
     public Vehicle() {
         carTrackers = new ArrayList<>();
@@ -76,6 +86,12 @@ public class Vehicle implements Serializable {
         return ownerCredentials;
     }
 
+    public OwnerCredentials getOwnerCredential() {
+        if (ownerCredentials.size() == 0) return null;
+
+        return ownerCredentials.get(ownerCredentials.size()-1);
+    }
+
     public void setOwnerCredentials(List<OwnerCredentials> ownerCredentials) {
         this.ownerCredentials = ownerCredentials;
     }
@@ -106,6 +122,26 @@ public class Vehicle implements Serializable {
 
     public void setStolen(boolean stolen) {
         isStolen = stolen;
+    }
+
+    public VehicleType getVehicleType() {
+        return vehicleType;
+    }
+
+    public void setVehicleType(VehicleType vehicleType) {
+        this.vehicleType = vehicleType;
+    }
+
+    public OwnerCredentials getOwnerCredentialsOnDate(Date d){
+        for (OwnerCredentials oc : ownerCredentials) {
+            // if begin is set and d after begin
+            if (oc.getBegin() != null && oc.getBegin().before(d)) {
+                // if no end or between dates
+                if (oc.getEnd() == null || oc.getEnd().after(d)) return oc;
+            }
+        }
+
+        return null;
     }
 
     @Override

@@ -1,51 +1,29 @@
 package domain.models;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class CarMovements {
-    private String licencePlate;
+    private Vehicle vehicle;
+    private OwnerCredentials ownerCredentials;
     private List<Movement>  movements;
-    private Map<String, List<Movement>> monthMovements;
 
-    public CarMovements(String licencePlate) {
-        this.licencePlate = licencePlate;
-        movements = new ArrayList<>(  );
-        monthMovements = new HashMap<>(  );
-    }
-
-    public Map<String, List<Movement>> getMonthMovements() {
-        return monthMovements;
-    }
-
-    public void setMonthMovements(Map<String, List<Movement>> monthMovements) {
-        this.monthMovements = monthMovements;
+    public CarMovements(Vehicle v, OwnerCredentials oc) {
+        this.vehicle = v;
+        this.ownerCredentials = oc;
+        this.movements = new ArrayList<>();
     }
 
     public void addMovement(Movement m) {
         movements.add( m );
-        addMonthMovement( m );
     }
 
-    private void addMonthMovement(Movement m) {
-        List<Movement> movements = monthMovements.get( m.getMonthName() );
-
-        if (movements == null) {
-            movements = new ArrayList<>(  );
-            monthMovements.put( m.getMonthName(), movements );
-        }
-
-        movements.add( m );
+    public Vehicle getVehicle() {
+        return vehicle;
     }
 
-    public String getLicencePlate() {
-        return licencePlate;
-    }
-
-    public void setLicencePlate(String licencePlate) {
-        this.licencePlate = licencePlate;
+    public void setVehicle(Vehicle vehicle) {
+        this.vehicle = vehicle;
     }
 
     public List<Movement> getMovements() {
@@ -54,5 +32,13 @@ public class CarMovements {
 
     public void setMovements(List<Movement> movements) {
         this.movements = movements;
+    }
+
+    public OwnerCredentials getOwnerCredentials() {
+        return ownerCredentials;
+    }
+
+    public void setOwnerCredentials(OwnerCredentials ownerCredentials) {
+        this.ownerCredentials = ownerCredentials;
     }
 }
