@@ -1,5 +1,5 @@
 package domain.models.enumerators;
 
-public enum PaymentStatusType {
+public enum PaymentStatus {
     OPEN, PAYED, CANCELLED
 }

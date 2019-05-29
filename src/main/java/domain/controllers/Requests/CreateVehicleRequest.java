@@ -1,13 +1,13 @@
 package domain.controllers.Requests;
 
-import domain.models.OwnerCredentials;
+import domain.enums.VehicleType;
 
 public class CreateVehicleRequest {
     private String licencePlate;
 
     private Long carTrackerId;
 
-    private Long rateCategoryId;
+    private VehicleType vehicleType;
 
     private Long ownerCredentialsId;
 
@@ -35,11 +35,11 @@ public class CreateVehicleRequest {
         this.carTrackerId = carTrackerId;
     }
 
-    public Long getRateCategoryId() {
-        return rateCategoryId;
+    public VehicleType getVehicleType() {
+        return vehicleType;
     }
 
-    public void setRateCategoryId(Long rateCategoryId) {
-        this.rateCategoryId = rateCategoryId;
+    public void setVehicleType(VehicleType vehicleType) {
+        this.vehicleType = vehicleType;
     }
 }

@@ -24,10 +24,17 @@ public class VehicleController {
     }
 
     @GET
-    @Path("/stolen")
+    @Path("/licenceplates/stolen")
     @Produces("application/json")
     public Response getAllStolenLicencePlates() {
         return Response.ok(service.getAllStolenLicencePlates()).build();
+    }
+
+    @GET
+    @Path("/licenceplates")
+    @Produces("application/json")
+    public Response getAllLicencePlates() {
+        return Response.ok(service.getAllLicencePlates()).build();
     }
 
     @GET
@@ -70,6 +77,6 @@ public class VehicleController {
     @Produces("application/json")
     @Consumes("application/json")
     public Response create(CreateVehicleRequest request) {
-        return Response.ok(service.create(request.getLicencePlate(), request.getRateCategoryId(), request.getCarTrackerId(), request.getOwnerCredentialsId())).build();
+        return Response.ok(service.create(request.getLicencePlate(), request.getVehicleType(), request.getCarTrackerId(), request.getOwnerCredentialsId())).build();
     }
 }

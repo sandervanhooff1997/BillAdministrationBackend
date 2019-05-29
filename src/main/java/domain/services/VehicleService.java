@@ -3,13 +3,11 @@ package domain.services;
 import domain.enums.VehicleType;
 import domain.models.CarTracker;
 import domain.models.OwnerCredentials;
-import domain.models.RateCategory;
 import domain.models.Vehicle;
 import domain.repositories.VehicleRepository;
 import org.hibernate.HibernateException;
 
 import javax.ejb.EJB;
-import javax.ejb.Local;
 import javax.ejb.Stateless;
 import java.util.*;
 
@@ -20,9 +18,6 @@ public class VehicleService {
 
     @EJB
     private CarTrackerService carTrackerService;
-
-    @EJB
-    private RateCategoryService rateCategoryService;
 
     @EJB
     private OwnerCredentialService ownerCredentialService;
@@ -53,6 +48,22 @@ public class VehicleService {
         }
     }
 
+    public List<String> getAllLicencePlates() {
+        try {
+            List<Vehicle> vehicles = repository.getAll();
+            List<String> licencePlates = new ArrayList<>();
+
+            for (Vehicle v : vehicles) {
+                licencePlates.add(v.getLicencePlate());
+            }
+
+            return licencePlates;
+        } catch (Exception ex){
+            System.out.println(ex.getMessage());
+            return null;
+        }
+    }
+
     public Vehicle getById(Long id) {
         return repository.getById(id);
     }
@@ -75,12 +86,13 @@ public class VehicleService {
         return repository.getByLicencePlate(licencePlate);
     }
 
-    public boolean  create(String licencePlate, Long rateCategoryId, Long carTrackerId, Long ownerCredentialsId) {
+    public boolean  create(String licencePlate, VehicleType vehicleType, Long carTrackerId, Long ownerCredentialsId) {
         if (licencePlate.isEmpty())
             return false;
 
         Vehicle v = new Vehicle();
         v.setLicencePlate(licencePlate);
+        v.setVehicleType(vehicleType);
 
         OwnerCredentials oc = ownerCredentialService.getById(ownerCredentialsId);
 
@@ -89,10 +101,6 @@ public class VehicleService {
             oc.setBegin(new Date());
             v.addOwnerCredentials(oc);
         }
-
-//        RateCategory rc = rateCategoryService.getById(rateCategoryId);
-//        if (rc != null)
-//            v.setRateCategory(rc);
 
         CarTracker ct = carTrackerService.getById(carTrackerId);
         if (ct != null)

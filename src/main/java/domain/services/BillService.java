@@ -2,7 +2,7 @@ package domain.services;
 
 import domain.enums.VehicleType;
 import domain.models.*;
-import domain.models.enumerators.PaymentStatusType;
+import domain.models.enumerators.PaymentStatus;
 import domain.models.Bill;
 import domain.models.CarMovements;
 import domain.repositories.BillRepository;
@@ -130,7 +130,7 @@ public class BillService {
         }
 
         b.setTotalAmount(applyVehicleTypeFactor(cm.getVehicle().getVehicleType(), b.getTotalAmount()));
-        b.setPaymentStatusType(PaymentStatusType.OPEN);
+        b.setPaymentStatus(PaymentStatus.OPEN);
 
         if (cm.getVehicle().getCarTrackers().size() > 0) {
             b.setCarTrackers(getCarTrackersInCarMovements(cm));
@@ -184,6 +184,8 @@ public class BillService {
     private boolean isRushHour(Date d) throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm") ;
 
+        // todo ochtendspits
+
         return dateFormat.parse(dateFormat.format(d)).after(dateFormat.parse("17:00"))
                 && dateFormat.parse(dateFormat.format(d)).before(dateFormat.parse("19:00"));
     }
@@ -192,7 +194,7 @@ public class BillService {
         if (bill == null)
             return false;
 
-        if (bill.getId() == null || bill.getPaymentStatusType() == null)
+        if (bill.getId() == null || bill.getPaymentStatus() == null)
             return false;
 
         try {

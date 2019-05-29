@@ -53,7 +53,7 @@ public class VehicleRepository {
         em.merge(vehicle);
     }
 
-    public void delete(Vehicle rateCategory) {
-        em.remove(rateCategory);
+    public void delete(Vehicle v) {
+        em.remove(v);
     }
 }

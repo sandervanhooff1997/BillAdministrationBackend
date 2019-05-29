@@ -44,6 +44,7 @@ public class BillController {
 
     @POST
     @Path("/generate")
+    @Consumes("application/json")
     @Produces("application/json")
     public Response generateBills(List<Movement> movements) {
         try {

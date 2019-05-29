@@ -1,7 +1,8 @@
 package domain.models;
 
 import com.sun.istack.internal.NotNull;
-import domain.models.enumerators.PaymentStatusType;
+import domain.enums.VehicleType;
+import domain.models.enumerators.PaymentStatus;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -32,11 +33,12 @@ public class Bill implements Serializable {
     @OneToMany(targetEntity = CarTracker.class, cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List carTrackers;
+
     @NotNull
     @Enumerated(STRING)
     @Column(nullable = false)
+    private PaymentStatus paymentStatus = PaymentStatus.OPEN;
 
-    private PaymentStatusType paymentStatusType = PaymentStatusType.OPEN;
 
     private Double totalAmount;
 
@@ -95,13 +97,12 @@ public class Bill implements Serializable {
         this.id = id;
     }
 
-    @NotNull
-    public PaymentStatusType getPaymentStatusType() {
-        return paymentStatusType;
+    public PaymentStatus getPaymentStatus() {
+        return paymentStatus;
     }
 
-    public void setPaymentStatusType(@NotNull PaymentStatusType paymentStatusType) {
-        this.paymentStatusType = paymentStatusType;
+    public void setPaymentStatus(PaymentStatus paymentStatus) {
+        this.paymentStatus = paymentStatus;
     }
 
     public Double getTotalAmount() {
@@ -153,7 +154,7 @@ public class Bill implements Serializable {
         return "Bill{" +
                 "id=" + id +
                 ", carTrackers=" + carTrackers +
-                ", paymentStatusType=" + paymentStatusType +
+                ", paymentStatus=" + paymentStatus +
                 ", totalAmount=" + totalAmount +
                 ", month='" + monthIndex + '\'' +
                 '}';
