@@ -112,6 +112,10 @@ public class Bill implements Serializable {
         this.totalAmount = totalAmount;
     }
 
+    public void addTotalAmount(Double totalAmount) {
+        this.totalAmount += totalAmount;
+    }
+
     public int getMonthIndex() {
         return monthIndex;
     }

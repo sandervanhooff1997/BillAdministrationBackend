@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 @PreMatching
 public class CorsFilter implements ContainerResponseFilter {
 
-    private final static Logger log = Logger.getLogger( CorsFilter.class.getName() );
+    private final static Logger log = Logger.getLogger( CorsFilter.class.getName());
 
     @Override
     public void filter( ContainerRequestContext requestCtx, ContainerResponseContext responseCtx ) throws IOException {

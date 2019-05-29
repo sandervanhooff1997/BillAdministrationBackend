@@ -1,29 +1,36 @@
 package domain.models;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-
-import java.awt.*;
-import java.io.Serializable;
-import java.util.Calendar;
+import java.awt.geom.Point2D;
 import java.util.Date;
 
-public class Movement implements Serializable {
+public class Movement {
+
     private Long id;
-    private Long serialNumber;
-    private String authorisationCode;
+
+    private String serialNumber;
+
+    private String address;
+
+    private Point2D.Double coordinate;
+
+    private String authCode;
+
     private Date date;
-    private CarTracker carTracker;
-    private Point coord = new Point();
+
+    private Long carTrackerId;
+
+    private Double distance;
 
     public Movement() {
     }
 
-    public CarTracker getCarTracker() {
-        return carTracker;
+    public Movement(String serialNumber, Long carTracker) {
+        this.serialNumber = serialNumber;
+        this.carTrackerId = carTracker;
     }
 
-    public void setCarTracker(CarTracker carTracker) {
-        this.carTracker = carTracker;
+    public Movement(String serialNumber) {
+        this.serialNumber = serialNumber;
     }
 
     public Long getId() {
@@ -34,20 +41,36 @@ public class Movement implements Serializable {
         this.id = id;
     }
 
-    public Long getSerialNumber() {
+    public String getSerialNumber() {
         return serialNumber;
     }
 
-    public void setSerialNumber(Long serialNumber) {
+    public void setSerialNumber(String serialNumber) {
         this.serialNumber = serialNumber;
     }
 
-    public String getAuthorisationCode() {
-        return authorisationCode;
+    public String getAddress() {
+        return address;
     }
 
-    public void setAuthorisationCode(String authorisationCode) {
-        this.authorisationCode = authorisationCode;
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public Point2D.Double getCoordinate() {
+        return coordinate;
+    }
+
+    public void setCoordinate(Point2D.Double coordinate) {
+        this.coordinate = coordinate;
+    }
+
+    public String getAuthCode() {
+        return authCode;
+    }
+
+    public void setAuthCode(String authCode) {
+        this.authCode = authCode;
     }
 
     public Date getDate() {
@@ -58,24 +81,33 @@ public class Movement implements Serializable {
         this.date = date;
     }
 
-    public String getMonthName() {
-        Calendar c = Calendar.getInstance();
-        c.setTime(new Date());
-        int month = c.get(Calendar.MONTH);
-        return String.valueOf( month );
+    public Long getCarTrackerId() {
+        return carTrackerId;
     }
 
-    public int getMonthIndex() {
-        Calendar c = Calendar.getInstance();
-        c.setTime(new Date());
-        return c.get(Calendar.MONTH);
+    public void setCarTrackerId(Long carTrackerId) {
+        this.carTrackerId = carTrackerId;
     }
 
-    public Point getCoord() {
-        return coord;
+    public Double getDistance() {
+        return distance;
     }
 
-    public void setCoord(Point coord) {
-        this.coord = coord;
+    public void setDistance(Double distance) {
+        this.distance = distance;
+    }
+
+    @Override
+    public String toString() {
+        return "Movement{" +
+                "id=" + id +
+                ", serialNumber='" + serialNumber + '\'' +
+                ", address='" + address + '\'' +
+                ", coordinate=" + coordinate +
+                ", authCode='" + authCode + '\'' +
+                ", date=" + date +
+                ", carTrackerId=" + carTrackerId +
+                ", distance=" + distance +
+                '}';
     }
 }

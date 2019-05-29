@@ -1,5 +1,6 @@
 package domain.services;
 
+import domain.enums.VehicleType;
 import domain.models.CarTracker;
 import domain.models.OwnerCredentials;
 import domain.models.RateCategory;
@@ -10,11 +11,7 @@ import org.hibernate.HibernateException;
 import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
-import java.lang.reflect.Array;
-import java.math.BigDecimal;
-import java.security.acl.Owner;
 import java.util.*;
-import java.util.logging.Logger;
 
 @Stateless
 public class VehicleService {
@@ -196,5 +193,13 @@ public class VehicleService {
         update(v);
 
         return true;
+    }
+
+    public Double getVehicleTypeMultiplier(VehicleType type) {
+        switch(type) {
+            case ELECTRIC: return 0.75;
+            case COMBUSTION: return 1.0;
+            default: return 1.0;
+        }
     }
 }
