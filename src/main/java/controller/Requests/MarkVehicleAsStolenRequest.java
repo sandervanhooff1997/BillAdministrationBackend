@@ -1,4 +1,4 @@
-package domain.controllers.Requests;
+package controller.Requests;
 
 public class MarkVehicleAsStolenRequest {
     private String licencePlate;

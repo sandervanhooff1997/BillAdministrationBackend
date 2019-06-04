@@ -1,4 +1,4 @@
-package domain.controllers;
+package controller;
 
 import domain.models.OwnerCredentials;
 import domain.services.OwnerCredentialService;

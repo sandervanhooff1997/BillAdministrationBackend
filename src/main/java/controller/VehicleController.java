@@ -1,9 +1,9 @@
-package domain.controllers;
+package controller;
 
-import domain.controllers.Requests.ChangeCarTrackerVehicleRequest;
-import domain.controllers.Requests.CreateVehicleRequest;
-import domain.controllers.Requests.MarkVehicleAsStolenRequest;
-import domain.controllers.Requests.TransferOwenershipVehicleRequest;
+import controller.Requests.CreateVehicleRequest;
+import controller.Requests.MarkVehicleAsStolenRequest;
+import controller.Requests.TransferOwenershipVehicleRequest;
+import controller.Requests.ChangeCarTrackerVehicleRequest;
 import domain.models.Vehicle;
 import domain.services.VehicleService;
 

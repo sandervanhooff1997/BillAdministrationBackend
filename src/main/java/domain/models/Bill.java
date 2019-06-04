@@ -1,7 +1,6 @@
 package domain.models;
 
 import com.sun.istack.internal.NotNull;
-import domain.enums.VehicleType;
 import domain.models.enumerators.PaymentStatus;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.LazyCollection;

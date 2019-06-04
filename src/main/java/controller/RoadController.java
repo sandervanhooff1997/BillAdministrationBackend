@@ -1,17 +1,17 @@
-package domain.controllers;
+package controller;
 
-import domain.models.Price;
-import domain.services.PriceService;
+import domain.models.Road;
+import domain.services.RoadService;
 
 import javax.ejb.EJB;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
 
-@Path("price")
-public class PriceController {
+@Path("road")
+public class RoadController {
 
     @EJB
-    private PriceService service;
+    private RoadService service;
 
     @GET
     @Produces("application/json")
@@ -23,23 +23,21 @@ public class PriceController {
     @POST
     @Consumes("application/json")
     @Produces("application/json")
-    public Response create(Price price) {
-
-        return Response.ok(service.create(price)).build();
+    public Response create(Road ct) {
+        return Response.ok(service.create(ct)).build();
     }
 
     @PUT
     @Produces("application/json")
     @Consumes("application/json")
-    public Response update(Price price) {
-        return Response.ok(service.update(price)).build();
+    public Response update(Road rc) {
+        return Response.ok(service.update(rc)).build();
     }
 
     @DELETE
-    @Path("{id}")
     @Produces("application/json")
     @Consumes("application/json")
-    public Response delete(@PathParam(value = "id") Long id) {
+    public Response delete(Long id) {
         return Response.ok(service.delete(id)).build();
     }
 }

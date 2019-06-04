@@ -1,4 +1,4 @@
-package domain.controllers.Requests;
+package controller.Requests;
 
 import domain.models.OwnerCredentials;
 

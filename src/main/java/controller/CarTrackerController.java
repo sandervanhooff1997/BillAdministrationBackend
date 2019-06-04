@@ -1,4 +1,4 @@
-package domain.controllers;
+package controller;
 
 import domain.models.CarTracker;
 import domain.services.CarTrackerService;
