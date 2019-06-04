@@ -35,7 +35,6 @@ public class PriceRepository {
             System.out.println(ex.getMessage());
             return null;
         }
-
     }
 
     public Price getById(Long id) {

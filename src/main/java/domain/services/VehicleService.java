@@ -86,6 +86,10 @@ public class VehicleService {
         return repository.getByLicencePlate(licencePlate);
     }
 
+    public List<Vehicle> getByOwnerCredentialsId(Long id) {
+        return repository.getByOwnerCredentialsId(id);
+    }
+
     public boolean  create(String licencePlate, VehicleType vehicleType, Long carTrackerId, Long ownerCredentialsId) {
         if (licencePlate.isEmpty())
             return false;

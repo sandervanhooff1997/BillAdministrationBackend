@@ -18,6 +18,9 @@ import static javax.persistence.EnumType.STRING;
         @NamedQuery(name = "Vehicle.getById", query = "select v from Vehicle v where v.id = :id"),
         @NamedQuery(name = "Vehicle.getAll", query = "select v from Vehicle v")
 })
+@NamedNativeQueries({
+        @NamedNativeQuery(name = "Vehicle.getByOwnerCredentialsId", query = "select * from vehicles v where v.id in (select Vehicle_id from vehicles_ownercredentials where ownerCredentials_id = :id)", resultClass = Vehicle.class)
+})
 @Table(name = "vehicles")
 public class Vehicle implements Serializable {
 
