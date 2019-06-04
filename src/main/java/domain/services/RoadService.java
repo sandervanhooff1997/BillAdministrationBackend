@@ -1,6 +1,8 @@
 package domain.services;
 
+import domain.models.Price;
 import domain.models.Road;
+import domain.models.Vehicle;
 import domain.repositories.RoadRepository;
 
 import javax.ejb.EJB;
@@ -21,13 +23,28 @@ public class RoadService {
         return repository.getAll();
     }
 
+    public Road getById(Long id) {
+        return repository.getById(id);
+    }
 
-    public boolean create(Road road) {
-        if (road == null)
+
+    public boolean create(String name, Long priceId, Long rushHourPriceId) {
+        if (name == null || priceId == null || rushHourPriceId == null)
             return false;
 
         try {
-            repository.create(road);
+            Price price = priceService.getById(priceId);
+            if (price == null) return false;
+
+            Price rushHourPrice = priceService.getById(rushHourPriceId);
+            if (rushHourPrice == null) return false;
+
+            Road r = new Road();
+            r.setName(name);
+            r.addPrice(price);
+            r.addRushPrice(rushHourPrice);
+
+            repository.create(r);
             return true;
         } catch (Exception e) {
             return false;
@@ -39,6 +56,22 @@ public class RoadService {
             return false;
 
         repository.update(road);
+        return true;
+    }
+
+    public boolean addPriceToRoad(Long roadId, Long priceId) {
+        if (roadId == null || priceId == null)
+            return false;
+
+        Road r = getById(roadId);
+        if (r == null) return false;
+
+        Price p = priceService.getById(priceId);
+        if (p == null) return false;
+
+        r.addPrice(p);
+
+        repository.update(r);
         return true;
     }
 

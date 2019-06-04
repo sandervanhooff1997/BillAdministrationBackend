@@ -20,18 +20,21 @@ public class PriceService {
         return repository.getAll();
     }
 
+    public List<Price> getAllUnused() {
+        return repository.getAllUnused();
+    }
 
-    public boolean create(Price price) {
+
+    public Price create(Price price) {
         if (price == null)
-            return false;
+            return null;
 
         try {
             price.setBegin(new Date());
             price.setEnd(null);
-            repository.create(price);
-            return true;
+            return repository.create(price);
         } catch (HibernateException e) {
-            return false;
+            return null;
         }
     }
 

@@ -72,6 +72,7 @@ public class Bill implements Serializable {
             return createDate.toString();
         }
     }
+
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }

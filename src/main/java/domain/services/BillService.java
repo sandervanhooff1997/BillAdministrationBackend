@@ -198,7 +198,7 @@ public class BillService {
             return false;
 
         try {
-            repository.changePaymentStatus(bill);
+            repository.create(bill);
             return true;
         } catch (Exception e) {
             System.out.println(e.getMessage());

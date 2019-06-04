@@ -118,7 +118,7 @@ public class VehicleService {
 
     public boolean markAsStolen(String licencePlate) {
         if (licencePlate.isEmpty())
-            return false;
+        return false;
 
         Vehicle v = getByLicencePlate(licencePlate);
 

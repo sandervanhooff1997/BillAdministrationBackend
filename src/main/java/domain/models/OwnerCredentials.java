@@ -3,7 +3,10 @@ package domain.models;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
+import javax.enterprise.inject.Default;
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,6 +26,8 @@ public class OwnerCredentials  implements Serializable {
     private Long id;
 
     private String name;
+
+    private Long bsn;
 
     private boolean isAccountRider;
 
@@ -108,6 +113,22 @@ public class OwnerCredentials  implements Serializable {
 
     public Date getBegin() {
         return begin;
+    }
+
+    public Long getBsn() {
+        return bsn;
+    }
+
+    public void setBsn(Long bsn) {
+        this.bsn = bsn;
+    }
+
+    public List<Bill> getBills() {
+        return bills;
+    }
+
+    public void setBills(List<Bill> bills) {
+        this.bills = bills;
     }
 
     public String getBeginFormatted () {

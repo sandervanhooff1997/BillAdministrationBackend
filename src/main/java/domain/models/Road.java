@@ -60,6 +60,7 @@ public class Road {
     }
 
     public void addPrice(Price p){
+        if (prices == null) prices = new ArrayList<>();
         prices.add(p);
     }
 
@@ -68,6 +69,7 @@ public class Road {
     }
 
     public void addRushPrice(Price p){
+        if (rushPrices == null) rushPrices = new ArrayList<>();
         rushPrices.add(p);
     }
 
