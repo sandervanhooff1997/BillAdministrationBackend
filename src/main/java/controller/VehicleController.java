@@ -10,6 +10,7 @@ import domain.services.VehicleService;
 import javax.ejb.EJB;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
+import java.util.List;
 
 @Path("vehicle")
 public class VehicleController {
@@ -67,7 +68,7 @@ public class VehicleController {
     @PUT
     @Path("/stolen")
     @Produces("application/json")
-    public Response update(MarkVehicleAsStolenRequest req) {
+    public Response update(MarkVehicleAsStolenRequest req, @QueryParam(value = "ids") List<Long> ids) {
         boolean success = service.markAsStolen(req.getLicencePlate());
 
         return Response.ok(success).build();

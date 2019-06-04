@@ -18,17 +18,6 @@ public class BillRepository {
         return em.createNamedQuery("Bill.getById", Bill.class).setParameter("id", id).getSingleResult();
     }
 
-    public void changePaymentStatus(Bill bill) throws HibernateException, NotFoundException {
-        Bill b = getById(bill.getId());
-
-        if (b == null)
-            throw new NotFoundException("Bill could not be found");
-
-        // update payment status
-        b.setPaymentStatus(bill.getPaymentStatus());
-    }
-
-
     public List<Bill> getAll() {
         try {
             List<Bill> bills = em.createQuery("SELECT c FROM Bill c", Bill.class).getResultList();

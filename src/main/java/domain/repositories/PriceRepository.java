@@ -28,6 +28,16 @@ public class PriceRepository {
 
     }
 
+    public List<Price> getAllUnused() {
+        try {
+            return em.createNamedQuery("Price.getAllUnused", Price.class).getResultList();
+        } catch (Exception ex){
+            System.out.println(ex.getMessage());
+            return null;
+        }
+
+    }
+
     public Price getById(Long id) {
         try {
             return em.createNamedQuery("Price.getById", Price.class).setParameter("id", id).getSingleResult();
@@ -37,8 +47,14 @@ public class PriceRepository {
         }
     }
 
-    public void create(Price price) throws HibernateException {
-        em.persist(price);
+    public Price create(Price price) throws HibernateException {
+        try {
+            em.persist(price);
+            return price;
+        } catch (HibernateException ex) {
+            System.out.println(ex.getMessage());
+        }
+        return null;
     }
 
     public void update(Price price) {
