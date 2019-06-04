@@ -1,5 +1,6 @@
 package domain.utils;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -16,5 +17,18 @@ public final class DateUtils {
         Calendar c = Calendar.getInstance();
         c.setTime(d);
         return c.get(Calendar.MONTH);
+    }
+
+    public static String getDateFormatted(Date d) {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        try {
+            return simpleDateFormat.format(d);
+        } catch (NullPointerException ex) {
+            return null;
+        }
+        catch (Exception ex
+        ) {
+            return d.toString();
+        }
     }
 }

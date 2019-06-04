@@ -1,5 +1,7 @@
 package domain.models;
 
+import domain.utils.DateUtils;
+
 import javax.persistence.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -46,16 +48,7 @@ public class Price {
     }
 
     public String getBeginFormatted () {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        try {
-            return simpleDateFormat.format(begin);
-        } catch (NullPointerException ex) {
-            return null;
-        }
-        catch (Exception ex
-        ) {
-            return begin.toString();
-        }
+        return DateUtils.getDateFormatted(begin);
     }
 
     public void setBegin(Date begin) {
@@ -67,16 +60,7 @@ public class Price {
     }
 
     public String getEndFormatted () {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        try {
-            return simpleDateFormat.format(end);
-        } catch (NullPointerException ex) {
-            return null;
-        }
-        catch (Exception ex
-        ) {
-            return end.toString();
-        }
+        return DateUtils.getDateFormatted(end);
     }
 
 

@@ -7,6 +7,7 @@ import domain.repositories.OwnerCredentialRepository;
 import javax.ejb.EJB;
 import javax.ejb.Local;
 import javax.ejb.Stateless;
+import java.util.Date;
 import java.util.List;
 
 @Stateless
@@ -65,6 +66,9 @@ public class OwnerCredentialService {
     public boolean create(OwnerCredentials ownerCredentials) {
         if (ownerCredentials == null)
             return false;
+
+        ownerCredentials.setBegin(new Date());
+        ownerCredentials.setEnd(null);
 
         repository.create(ownerCredentials);
         return true;
