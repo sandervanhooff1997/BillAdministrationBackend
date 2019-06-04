@@ -16,6 +16,7 @@ import java.util.List;
 @Entity
 @NamedQueries({
         @NamedQuery(name = "OwnerCredentials.getById", query = "select oc from OwnerCredentials oc where oc.id = :id"),
+        @NamedQuery(name = "OwnerCredentials.getByBsnAndPostalCode", query = "select oc from OwnerCredentials oc where oc.bsn = :bsn AND oc.postalCode = :postalCode"),
         @NamedQuery(name = "OwnerCredentials.getAll", query = "select oc from OwnerCredentials oc")
 })
 @Table(name = "ownercredentials")

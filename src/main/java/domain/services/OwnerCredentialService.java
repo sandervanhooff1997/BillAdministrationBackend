@@ -51,6 +51,13 @@ public class OwnerCredentialService {
         return ownerCredentials;
     }
 
+    public OwnerCredentials getByBsnAndPostalCode(Long bsn, String postalCode) {
+        if (bsn == null || postalCode == null || postalCode.isEmpty())
+            return null;
+
+        return repository.getByBsnAndPostalCode(bsn, postalCode);
+    }
+
     public OwnerCredentials getById(Long id) {
         return repository.getById(id);
     }
