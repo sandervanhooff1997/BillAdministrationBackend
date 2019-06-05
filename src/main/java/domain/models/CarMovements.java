@@ -8,6 +8,9 @@ public class CarMovements {
     private OwnerCredentials ownerCredentials;
     private List<Movement>  movements;
 
+    public CarMovements() {
+    }
+
     public CarMovements(Vehicle v, OwnerCredentials oc) {
         this.vehicle = v;
         this.ownerCredentials = oc;
@@ -40,5 +43,14 @@ public class CarMovements {
 
     public void setOwnerCredentials(OwnerCredentials ownerCredentials) {
         this.ownerCredentials = ownerCredentials;
+    }
+
+    @Override
+    public String toString() {
+        return "CarMovements{" +
+                "vehicle=" + vehicle +
+                ", ownerCredentials=" + ownerCredentials +
+                ", movements=" + movements +
+                '}';
     }
 }

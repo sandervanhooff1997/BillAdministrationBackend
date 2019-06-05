@@ -13,6 +13,7 @@ import java.util.List;
 @Local
 @Stateless
 public class RoadService {
+
     @EJB
     private RoadRepository repository;
 
