@@ -93,7 +93,7 @@ public class BillService {
         return makeBills(carMovements, roads);
     }
 
-    private List<Bill> makeBills(List<CarMovements> carMovements, List<Road> roads) {
+    public List<Bill> makeBills(List<CarMovements> carMovements, List<Road> roads) {
         List<Bill> bills = new ArrayList<>();
 
         // for each car with all its movements
@@ -105,7 +105,7 @@ public class BillService {
         return bills;
     }
 
-    private Bill makeBill (CarMovements cm, List<Road> roads) {
+    public Bill makeBill (CarMovements cm, List<Road> roads) {
         // calculate difference
         // create the bill
         Bill b = new Bill();
@@ -144,7 +144,7 @@ public class BillService {
         return b;
     }
 
-    private List<CarTracker> getCarTrackersInCarMovements(CarMovements cm) {
+    public List<CarTracker> getCarTrackersInCarMovements(CarMovements cm) {
         // get the max date of movements in this set
         Date maxDate = cm.getMovements().stream().map(x -> x.getDate()).max(Date::compareTo).get();
 
@@ -158,12 +158,12 @@ public class BillService {
 
     }
 
-    private Double applyVehicleTypeFactor (VehicleType type, Double amount) {
+    public Double applyVehicleTypeFactor (VehicleType type, Double amount) {
         Double multiplier = vehicleService.getVehicleTypeMultiplier(type);
         return amount * multiplier;
     }
 
-    private Double calculateTaxes (Movement m, Road r, boolean inRushHour) {
+    public Double calculateTaxes (Movement m, Road r, boolean inRushHour) {
         // if no road was found, apply default rates
         if (r == null && inRushHour) return m.getDistance() * roadService.getDefaultRushHourKilometerRate();
         if (r == null) return m.getDistance() * roadService.getDefaultKilometerRate();
@@ -181,7 +181,7 @@ public class BillService {
         return m.getDistance() * p.getPrice();
     }
 
-    private boolean isRushHour(Date d) throws ParseException {
+    public boolean isRushHour(Date d) throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm") ;
 
         // todo ochtendspits
