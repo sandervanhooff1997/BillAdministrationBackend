@@ -54,10 +54,11 @@ public class VehicleRepository {
         }
     }
 
-    public void create(Vehicle vehicle) {
+    public Long create(Vehicle vehicle) {
         em.getTransaction().begin();
-        em.merge(vehicle);
+        Vehicle v = em.merge(vehicle);
         em.getTransaction().commit();
+        return v.getId();
     }
 
     public void update(Vehicle vehicle) {

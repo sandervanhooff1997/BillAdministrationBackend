@@ -46,6 +46,17 @@ public class OwnerCredentialRepository {
         }
     }
 
+    public OwnerCredentials getByBsn(Long bsn) {
+        try {
+            return em.createNamedQuery("OwnerCredentials.getByBsn", OwnerCredentials.class)
+                    .setParameter("bsn", bsn)
+                    .getSingleResult();
+        } catch (Exception ex){
+            System.out.println(ex.getMessage());
+            return null;
+        }
+    }
+
     public void create(OwnerCredentials ownerCredentials) {
         em.persist(ownerCredentials);
     }

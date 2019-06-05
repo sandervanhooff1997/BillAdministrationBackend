@@ -136,7 +136,7 @@ public class BillService {
             b.setCarTrackers(getCarTrackersInCarMovements(cm));
         }
 
-        if (cm.getVehicle().getOwnerCredentials().size() > 0)
+        if (cm.getVehicle().getOwnerCredentials() != null)
             b.setOwnerCredentials(cm.getOwnerCredentials());
 
         // persist & return

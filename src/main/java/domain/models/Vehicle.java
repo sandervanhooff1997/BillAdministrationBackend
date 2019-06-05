@@ -33,19 +33,9 @@ public class Vehicle implements Serializable {
     @OneToMany(targetEntity = CarTracker.class, cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<CarTracker> carTrackers;
-//
-//    @OneToMany(targetEntity = OwnerCredentials.class, cascade = CascadeType.ALL)
-//    @LazyCollection(LazyCollectionOption.FALSE)
-//    private List<OwnerCredentials> ownerCredentials;
 
-    @ManyToMany(cascade = { CascadeType.ALL })
-    @JoinTable(
-            name = "vehicles_ownercredentials",
-            joinColumns = { @JoinColumn(name = "vehicle_id") },
-            inverseJoinColumns = { @JoinColumn(name = "ownercredentials_id") }
-    )
-    @LazyCollection(LazyCollectionOption.FALSE)
-    Set<OwnerCredentials> ownerCredentials = new HashSet<>();
+    @ManyToOne(cascade = CascadeType.ALL)
+    private OwnerCredentials ownerCredentials;
 
     @NotNull
     @Enumerated(STRING)
@@ -54,7 +44,6 @@ public class Vehicle implements Serializable {
 
     public Vehicle() {
         carTrackers = new ArrayList<>();
-        ownerCredentials = new HashSet<>();
     }
 
     public Vehicle(String licencePlate) {
@@ -75,18 +64,6 @@ public class Vehicle implements Serializable {
 
     public void setLicencePlate(String licencePlate) {
         this.licencePlate = licencePlate;
-    }
-
-    public Set<OwnerCredentials> getOwnerCredentials() {
-        return ownerCredentials;
-    }
-
-    public void setOwnerCredentials(Set<OwnerCredentials> ownerCredentials) {
-        this.ownerCredentials = ownerCredentials;
-    }
-
-    public void addOwnerCredentials(OwnerCredentials oc) {
-        this.ownerCredentials.add(oc);
     }
 
     public List<CarTracker> getCarTrackers() {
@@ -122,15 +99,23 @@ public class Vehicle implements Serializable {
     }
 
     public OwnerCredentials getOwnerCredentialsOnDate(Date d){
-        for (OwnerCredentials oc : ownerCredentials) {
-            // if begin is set and d after begin
-            if (oc.getBegin() != null && oc.getBegin().before(d)) {
-                // if no end or between dates
-                if (oc.getEnd() == null || oc.getEnd().after(d)) return oc;
-            }
-        }
+//        for (OwnerCredentials oc : ownerCredentials) {
+//            // if begin is set and d after begin
+//            if (oc.getBegin() != null && oc.getBegin().before(d)) {
+//                // if no end or between dates
+//                if (oc.getEnd() == null || oc.getEnd().after(d)) return oc;
+//            }
+//        }
 
         return null;
+    }
+
+    public OwnerCredentials getOwnerCredentials() {
+        return ownerCredentials;
+    }
+
+    public void setOwnerCredentials(OwnerCredentials ownerCredentials) {
+        this.ownerCredentials = ownerCredentials;
     }
 
     @Override
