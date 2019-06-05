@@ -155,7 +155,6 @@ public class BillService {
                 .stream()
                 .filter( x -> x.getDeletedOn() == null || x.getDeletedOn().after(maxDate))
                 .collect(Collectors.toList());
-
     }
 
     public Double applyVehicleTypeFactor (VehicleType type, Double amount) {

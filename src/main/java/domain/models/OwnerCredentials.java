@@ -8,7 +8,6 @@ import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
 import javax.validation.constraints.Null;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Entity
