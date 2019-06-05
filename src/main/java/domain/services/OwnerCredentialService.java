@@ -9,6 +9,7 @@ import javax.ejb.Local;
 import javax.ejb.Stateless;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Stateless
 public class OwnerCredentialService {
@@ -28,10 +29,7 @@ public class OwnerCredentialService {
 
         // remove used cartrackers
         for (Vehicle v : vehicles) {
-            for (OwnerCredentials oc : v.getOwnerCredentials()) {
-                if (oc != null)
-                    ownerCredentials.remove(oc);
-            }
+            ownerCredentials.remove(v.getOwnerCredentials());
         }
 
         return ownerCredentials;
@@ -44,8 +42,8 @@ public class OwnerCredentialService {
         if (v == null)
             return null;
 
-        for (OwnerCredentials oc : v.getOwnerCredentials()) {
-            if (oc != null)
+        for (OwnerCredentials oc : ownerCredentials) {
+            if (oc.getId().equals(v.getOwnerCredentials().getId()))
                 ownerCredentials.remove(oc);
         }
 
@@ -59,6 +57,13 @@ public class OwnerCredentialService {
         return repository.getByBsnAndPostalCode(bsn, postalCode);
     }
 
+    public OwnerCredentials getByBsn(Long bsn) {
+        if (bsn == null)
+            return null;
+
+        return repository.getByBsn(bsn);
+    }
+
     public OwnerCredentials getById(Long id) {
         return repository.getById(id);
     }
@@ -66,9 +71,6 @@ public class OwnerCredentialService {
     public boolean create(OwnerCredentials ownerCredentials) {
         if (ownerCredentials == null)
             return false;
-
-        ownerCredentials.setBegin(new Date());
-        ownerCredentials.setEnd(null);
 
         repository.create(ownerCredentials);
         return true;

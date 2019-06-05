@@ -1,20 +1,18 @@
 package domain.models;
 
-import domain.utils.DateUtils;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
-import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
-import javax.validation.constraints.Null;
 import java.io.Serializable;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NamedQueries({
         @NamedQuery(name = "OwnerCredentials.getById", query = "select oc from OwnerCredentials oc where oc.id = :id"),
         @NamedQuery(name = "OwnerCredentials.getByBsnAndPostalCode", query = "select oc from OwnerCredentials oc where oc.bsn = :bsn AND oc.postalCode = :postalCode"),
+        @NamedQuery(name = "OwnerCredentials.getByBsn", query = "select oc from OwnerCredentials oc where oc.bsn = :bsn"),
         @NamedQuery(name = "OwnerCredentials.getAll", query = "select oc from OwnerCredentials oc")
 })
 @Table(name = "ownercredentials")
@@ -26,6 +24,7 @@ public class OwnerCredentials  implements Serializable {
 
     private String name;
 
+    @Column(unique = true)
     private Long bsn;
 
     private boolean isAccountRider;
@@ -38,19 +37,13 @@ public class OwnerCredentials  implements Serializable {
 
     private int houseNumber;
 
-    private Date begin;
-
-    @Null
-    private Date end;
-
     @OneToMany(cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Bill> bills;
 
-    @JsonbTransient
-    @ManyToMany(mappedBy = "ownerCredentials", fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
-    private Set<Vehicle> vehicles = new HashSet<>();
+    private List<Vehicle> vehicles;
 
     public OwnerCredentials() {
         bills = new ArrayList<>();
@@ -116,10 +109,6 @@ public class OwnerCredentials  implements Serializable {
         this.houseNumber = houseNumber;
     }
 
-    public Date getBegin() {
-        return begin;
-    }
-
     public Long getBsn() {
         return bsn;
     }
@@ -136,32 +125,11 @@ public class OwnerCredentials  implements Serializable {
         this.bills = bills;
     }
 
-    public String getBeginFormatted () {
-        return DateUtils.getDateFormatted(begin);
-
-    }
-
-    public void setBegin(Date begin) {
-        this.begin = begin;
-    }
-
-    public Date getEnd() {
-        return end;
-    }
-
-    public String getEndFormatted () {
-        return DateUtils.getDateFormatted(end);
-    }
-
-    public void setEnd(Date end) {
-        this.end = end;
-    }
-
-    public Set<Vehicle> getVehicles() {
+    public List<Vehicle> getVehicles() {
         return vehicles;
     }
 
-    public void setVehicles(Set<Vehicle> vehicles) {
+    public void setVehicles(List<Vehicle> vehicles) {
         this.vehicles = vehicles;
     }
 
@@ -175,8 +143,6 @@ public class OwnerCredentials  implements Serializable {
                 ", postalCode='" + postalCode + '\'' +
                 ", streetName='" + streetName + '\'' +
                 ", houseNumber=" + houseNumber +
-                ", begin=" + begin +
-                ", end=" + end +
                 '}';
     }
 }

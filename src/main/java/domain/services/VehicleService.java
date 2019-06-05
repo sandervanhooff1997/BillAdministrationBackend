@@ -20,6 +20,9 @@ public class VehicleService {
     private CarTrackerService carTrackerService;
 
     @EJB
+    private OwnershipHistoryService ownershipHistoryService;
+
+    @EJB
     private OwnerCredentialService ownerCredentialService;
 
     public List<Vehicle> getAll() {
@@ -102,8 +105,7 @@ public class VehicleService {
 
         if (oc != null)
         {
-            oc.setBegin(new Date());
-            v.addOwnerCredentials(oc);
+            v.setOwnerCredentials(oc);
         }
 
         CarTracker ct = carTrackerService.getById(carTrackerId);
@@ -111,8 +113,10 @@ public class VehicleService {
             v.addCarTracker(ct);
 
         try {
-            System.out.println("Saving: " + v);
-            repository.create(v);
+            Long vId = repository.create(v);
+
+            ownershipHistoryService.create(vId, oc.getId());
+
             return true;
         } catch (HibernateException e) {
             System.out.println(e.getMessage());
@@ -155,7 +159,7 @@ public class VehicleService {
         if (v == null)
             return false;
 
-        v.getOwnerCredentials().add(oc);
+        v.setOwnerCredentials(oc);
 
         return update(v);
     }
