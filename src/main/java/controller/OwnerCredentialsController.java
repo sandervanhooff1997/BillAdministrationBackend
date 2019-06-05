@@ -33,6 +33,13 @@ public class OwnerCredentialsController {
         return Response.ok(service.getAllUnusedByVehicleId(vehicleId)).build();
     }
 
+    @GET
+    @Path("/{bsn}/{postalCode}")
+    @Produces("application/json")
+    public Response getByBsnAndPostalCode(@PathParam(value = "bsn") Long bsn, @PathParam(value = "postalCode") String postalCode) {
+        return Response.ok(service.getByBsnAndPostalCode(bsn, postalCode)).build();
+    }
+
     @PUT
     @Produces("application/json")
     public Response update(OwnerCredentials oc) {

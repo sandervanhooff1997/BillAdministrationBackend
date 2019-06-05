@@ -2,6 +2,7 @@ package domain.models;
 
 import com.sun.istack.internal.NotNull;
 import domain.models.enumerators.PaymentStatus;
+import domain.utils.DateUtils;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
@@ -60,16 +61,7 @@ public class Bill implements Serializable {
     }
 
     public String getCreateDateFormatted () {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        try {
-            return simpleDateFormat.format(createDate);
-        } catch (NullPointerException ex) {
-            return null;
-        }
-        catch (Exception ex
-        ) {
-            return createDate.toString();
-        }
+        return DateUtils.getDateFormatted(createDate);
     }
 
     public void setCreateDate(Date createDate) {

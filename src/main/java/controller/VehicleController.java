@@ -45,6 +45,13 @@ public class VehicleController {
         return Response.ok(service.getByLicencePlate(licencePlate)).build();
     }
 
+    @GET
+    @Path("/ownercredentials/{id}")
+    @Produces("application/json")
+    public Response getByOwnerCredentialsId(@PathParam(value="id") Long id) {
+        return Response.ok(service.getByOwnerCredentialsId(id)).build();
+    }
+
     @PUT
     @Produces("application/json")
     public Response update(Vehicle v) {

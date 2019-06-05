@@ -1,21 +1,20 @@
 package domain.models;
 
+import domain.utils.DateUtils;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
-import javax.enterprise.inject.Default;
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
+import javax.validation.constraints.Null;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Entity
 @NamedQueries({
         @NamedQuery(name = "OwnerCredentials.getById", query = "select oc from OwnerCredentials oc where oc.id = :id"),
+        @NamedQuery(name = "OwnerCredentials.getByBsnAndPostalCode", query = "select oc from OwnerCredentials oc where oc.bsn = :bsn AND oc.postalCode = :postalCode"),
         @NamedQuery(name = "OwnerCredentials.getAll", query = "select oc from OwnerCredentials oc")
 })
 @Table(name = "ownercredentials")
@@ -41,11 +40,17 @@ public class OwnerCredentials  implements Serializable {
 
     private Date begin;
 
+    @Null
     private Date end;
 
     @OneToMany(cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Bill> bills;
+
+    @JsonbTransient
+    @ManyToMany(mappedBy = "ownerCredentials", fetch = FetchType.LAZY)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private Set<Vehicle> vehicles = new HashSet<>();
 
     public OwnerCredentials() {
         bills = new ArrayList<>();
@@ -132,16 +137,8 @@ public class OwnerCredentials  implements Serializable {
     }
 
     public String getBeginFormatted () {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        try {
-            return simpleDateFormat.format(begin);
-        } catch (NullPointerException ex) {
-            return null;
-        }
-        catch (Exception ex
-        ) {
-            return begin.toString();
-        }
+        return DateUtils.getDateFormatted(begin);
+
     }
 
     public void setBegin(Date begin) {
@@ -153,20 +150,19 @@ public class OwnerCredentials  implements Serializable {
     }
 
     public String getEndFormatted () {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        try {
-            return simpleDateFormat.format(begin);
-        } catch (NullPointerException ex) {
-            return null;
-        }
-        catch (Exception ex
-        ) {
-            return begin.toString();
-        }
+        return DateUtils.getDateFormatted(end);
     }
 
     public void setEnd(Date end) {
         this.end = end;
+    }
+
+    public Set<Vehicle> getVehicles() {
+        return vehicles;
+    }
+
+    public void setVehicles(Set<Vehicle> vehicles) {
+        this.vehicles = vehicles;
     }
 
     @Override

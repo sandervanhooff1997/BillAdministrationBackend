@@ -34,6 +34,18 @@ public class OwnerCredentialRepository {
         }
     }
 
+    public OwnerCredentials getByBsnAndPostalCode(Long bsn, String postalCode) {
+        try {
+            return em.createNamedQuery("OwnerCredentials.getByBsnAndPostalCode", OwnerCredentials.class)
+                    .setParameter("bsn", bsn)
+                    .setParameter("postalCode", postalCode)
+                    .getSingleResult();
+        } catch (Exception ex){
+            System.out.println(ex.getMessage());
+            return null;
+        }
+    }
+
     public void create(OwnerCredentials ownerCredentials) {
         em.persist(ownerCredentials);
     }

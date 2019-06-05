@@ -43,6 +43,17 @@ public class VehicleRepository {
         }
     }
 
+    public List<Vehicle> getByOwnerCredentialsId(Long id) {
+        try {
+            return em.createNamedQuery("Vehicle.getByOwnerCredentialsId", Vehicle.class)
+                    .setParameter("id", id)
+                    .getResultList();
+        } catch (Exception ex){
+            System.out.println(ex.getMessage());
+            return null;
+        }
+    }
+
     public void create(Vehicle vehicle) {
         em.getTransaction().begin();
         em.merge(vehicle);

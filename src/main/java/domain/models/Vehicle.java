@@ -7,9 +7,7 @@ import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static javax.persistence.EnumType.STRING;
 
@@ -17,6 +15,9 @@ import static javax.persistence.EnumType.STRING;
 @NamedQueries({
         @NamedQuery(name = "Vehicle.getById", query = "select v from Vehicle v where v.id = :id"),
         @NamedQuery(name = "Vehicle.getAll", query = "select v from Vehicle v")
+})
+@NamedNativeQueries({
+        @NamedNativeQuery(name = "Vehicle.getByOwnerCredentialsId", query = "select * from vehicles v where v.id in (select Vehicle_id from vehicles_ownercredentials where ownerCredentials_id = :id)", resultClass = Vehicle.class)
 })
 @Table(name = "vehicles")
 public class Vehicle implements Serializable {
@@ -32,10 +33,19 @@ public class Vehicle implements Serializable {
     @OneToMany(targetEntity = CarTracker.class, cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<CarTracker> carTrackers;
+//
+//    @OneToMany(targetEntity = OwnerCredentials.class, cascade = CascadeType.ALL)
+//    @LazyCollection(LazyCollectionOption.FALSE)
+//    private List<OwnerCredentials> ownerCredentials;
 
-    @OneToMany(targetEntity = OwnerCredentials.class, cascade = CascadeType.ALL)
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(
+            name = "vehicles_ownercredentials",
+            joinColumns = { @JoinColumn(name = "vehicle_id") },
+            inverseJoinColumns = { @JoinColumn(name = "ownercredentials_id") }
+    )
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<OwnerCredentials> ownerCredentials;
+    Set<OwnerCredentials> ownerCredentials = new HashSet<>();
 
     @NotNull
     @Enumerated(STRING)
@@ -44,7 +54,7 @@ public class Vehicle implements Serializable {
 
     public Vehicle() {
         carTrackers = new ArrayList<>();
-        ownerCredentials = new ArrayList<>();
+        ownerCredentials = new HashSet<>();
     }
 
     public Vehicle(String licencePlate) {
@@ -67,17 +77,11 @@ public class Vehicle implements Serializable {
         this.licencePlate = licencePlate;
     }
 
-    public List<OwnerCredentials> getOwnerCredentials() {
+    public Set<OwnerCredentials> getOwnerCredentials() {
         return ownerCredentials;
     }
 
-    public OwnerCredentials getOwnerCredential() {
-        if (ownerCredentials.size() == 0) return null;
-
-        return ownerCredentials.get(ownerCredentials.size()-1);
-    }
-
-    public void setOwnerCredentials(List<OwnerCredentials> ownerCredentials) {
+    public void setOwnerCredentials(Set<OwnerCredentials> ownerCredentials) {
         this.ownerCredentials = ownerCredentials;
     }
 
