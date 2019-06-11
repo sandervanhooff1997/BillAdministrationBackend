@@ -17,7 +17,7 @@ import static javax.persistence.EnumType.STRING;
         @NamedQuery(name = "Vehicle.getAll", query = "select v from Vehicle v")
 })
 @NamedNativeQueries({
-        @NamedNativeQuery(name = "Vehicle.getByOwnerCredentialsId", query = "select * from vehicles v where v.id in (select Vehicle_id from vehicles_ownercredentials where ownerCredentials_id = :id)", resultClass = Vehicle.class)
+        @NamedNativeQuery(name = "Vehicle.getByOwnerCredentialsId", query = "select * from vehicles v where v.ownerCredentials_id = :id", resultClass = Vehicle.class)
 })
 @Table(name = "vehicles")
 public class Vehicle implements Serializable {
@@ -96,18 +96,6 @@ public class Vehicle implements Serializable {
 
     public void setVehicleType(VehicleType vehicleType) {
         this.vehicleType = vehicleType;
-    }
-
-    public OwnerCredentials getOwnerCredentialsOnDate(Date d){
-//        for (OwnerCredentials oc : ownerCredentials) {
-//            // if begin is set and d after begin
-//            if (oc.getBegin() != null && oc.getBegin().before(d)) {
-//                // if no end or between dates
-//                if (oc.getEnd() == null || oc.getEnd().after(d)) return oc;
-//            }
-//        }
-
-        return null;
     }
 
     public OwnerCredentials getOwnerCredentials() {

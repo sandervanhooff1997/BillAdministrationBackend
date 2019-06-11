@@ -67,6 +67,22 @@ public class OwnershipHistoryService {
         return repository.getById(id);
     }
 
+    public OwnershipHistory getOnDate(String licensePlate, Date d) {
+        if (licensePlate == null || d == null) return null;
+
+        List<OwnershipHistory> list = getAllByLicensePlate(licensePlate);
+
+        for (OwnershipHistory oh : list) {
+            // if begin is set and d after begin
+            if (oh.getBegin() != null && oh.getBegin().before(d)) {
+                // if no end or between dates
+                if (oh.getEnd() == null || oh.getEnd().after(d)) return oh;
+            }
+        }
+
+        return null;
+    }
+
     public boolean update(OwnershipHistory ownershipHistory) {
         if (ownershipHistory == null)
             return false;
