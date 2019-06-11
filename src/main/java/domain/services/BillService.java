@@ -228,8 +228,6 @@ public class BillService {
         if (b == null)
             return null;
 
-        ;
-
         /** todo: get movements by cartracker and month of bill
          *  List<Movement></Movement> movements = movementService.getMovementsFromCarTrackersAndId(b.getCarTrackers(), b.getMonthIndex());
          *  recalculate(movements);
