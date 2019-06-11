@@ -75,7 +75,7 @@ public class VehicleController {
     @PUT
     @Path("/stolen")
     @Produces("application/json")
-    public Response update(MarkVehicleAsStolenRequest req, @QueryParam(value = "ids") List<Long> ids) {
+    public Response update(MarkVehicleAsStolenRequest req) {
         boolean success = service.markAsStolen(req.getLicencePlate());
 
         return Response.ok(success).build();

@@ -25,6 +25,9 @@ public class BillService {
     private VehicleService vehicleService;
 
     @EJB
+    private OwnershipHistoryService ownershipHistoryService;
+
+    @EJB
     private RoadService roadService;
 
     /**
@@ -45,7 +48,10 @@ public class BillService {
             if (vehicle == null) continue;
 
             // get the owner at the time of this movement
-            OwnerCredentials currentOwner = vehicle.getOwnerCredentialsOnDate(m.getDate());
+            OwnershipHistory ownershipHistory = ownershipHistoryService.getOnDate(vehicle.getLicencePlate(), m.getDate());
+            if (ownershipHistory == null) continue;
+
+            OwnerCredentials currentOwner = ownershipHistory.getOwnerCredentials();
 
             Long currentOwnerId = currentOwner.getId();
             Long vehicleId = vehicle.getId();
