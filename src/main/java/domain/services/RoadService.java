@@ -76,6 +76,22 @@ public class RoadService {
         return true;
     }
 
+    public boolean addRushPriceToRoad(Long roadId, Long priceId) {
+        if (roadId == null || priceId == null)
+            return false;
+
+        Road r = getById(roadId);
+        if (r == null) return false;
+
+        Price p = priceService.getById(priceId);
+        if (p == null) return false;
+
+        r.addRushPrice(p);
+
+        repository.update(r);
+        return true;
+    }
+
     public boolean delete(Long id) {
         Road road = repository.getById(id);
 

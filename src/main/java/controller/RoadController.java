@@ -43,6 +43,13 @@ public class RoadController {
     public Response addPriceToRoad(AddPriceToRoadRequest req) {
         return Response.ok(service.addPriceToRoad(req.getRoadId(), req.getPriceId())).build();
     }
+    @PUT
+    @Path("/addrushprice")
+    @Produces("application/json")
+    @Consumes("application/json")
+    public Response addRushPriceToRoad(AddPriceToRoadRequest req) {
+        return Response.ok(service.addRushPriceToRoad(req.getRoadId(), req.getPriceId())).build();
+    }
 
     @DELETE
     @Produces("application/json")
