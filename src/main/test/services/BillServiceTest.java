@@ -20,7 +20,6 @@ import static org.mockito.Mockito.*;
 public class BillServiceTest {
 
     private BillService billService;
-    private List<Bill> bills = new ArrayList<>();
 
     @Before
     public void setUp() throws Exception {
@@ -43,7 +42,7 @@ public class BillServiceTest {
             movementList.add(movement);
         }
 
-        bills = billService.generateBills(movementList);
+        List<Bill> bills = billService.generateBills(movementList);
 
         Assert.assertNotNull(bills);
     }
