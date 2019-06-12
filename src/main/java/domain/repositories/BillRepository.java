@@ -39,4 +39,12 @@ public class BillRepository {
         }
     }
 
+    public void update(Bill bill) {
+        try {
+            em.merge(bill);
+        } catch (HibernateException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+
 }
