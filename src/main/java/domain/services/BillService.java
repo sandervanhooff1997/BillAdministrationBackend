@@ -7,9 +7,12 @@ import domain.models.Bill;
 import domain.models.CarMovements;
 import domain.repositories.BillRepository;
 import domain.utils.DateUtils;
+import domain.utils.NumberUtils;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -136,10 +139,13 @@ public class BillService {
         }
 
         b.setTotalAmount(applyVehicleTypeFactor(cm.getVehicle().getVehicleType(), b.getTotalAmount()));
+        b.setTotalAmount(NumberUtils.round(b.getTotalAmount(), 2));
         b.setPaymentStatus(PaymentStatus.OPEN);
 
         if (cm.getVehicle().getCarTrackers().size() > 0) {
-            b.setCarTrackers(getCarTrackersInCarMovements(cm));
+            // convert list to set
+            Set<CarTracker> set = new HashSet<>(getCarTrackersInCarMovements(cm));
+            b.setCarTrackers(set);
         }
 
         if (cm.getVehicle().getOwnerCredentials() != null)
@@ -149,6 +155,7 @@ public class BillService {
         create(b);
         return b;
     }
+
 
     public List<CarTracker> getCarTrackersInCarMovements(CarMovements cm) {
         // get the max date of movements in this set

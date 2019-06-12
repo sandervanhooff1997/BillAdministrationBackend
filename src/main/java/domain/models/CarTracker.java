@@ -3,16 +3,22 @@ package domain.models;
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @NamedQueries({
         @NamedQuery(name = "CarTracker.getById", query = "select ct from CarTracker ct where ct.id = :id"),
         @NamedQuery(name = "CarTracker.getAll", query = "select ct from CarTracker ct"),
         @NamedQuery(name = "CarTracker.getAllNotDeleted", query = "select ct from CarTracker ct where ct.isDeleted = false")
+})
+@NamedNativeQueries({
+        @NamedNativeQuery(name = "CarTracker.getAllUnused", query = "select * from cartrackers where id not in (select carTrackers_id from vehicles_cartrackers)", resultClass = CarTracker.class)
 })
 @Table(name = "cartrackers")
 public class CarTracker implements Serializable {
@@ -31,6 +37,11 @@ public class CarTracker implements Serializable {
 
     @Transient
     private List movements;
+
+    @JsonbTransient
+    @ManyToMany(mappedBy = "carTrackers", fetch = FetchType.LAZY)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private Set<Bill> bills = new HashSet<>();
 
     public CarTracker() {
     }
@@ -88,6 +99,14 @@ public class CarTracker implements Serializable {
 
     public void setDeletedOn(Date deletedOn) {
         this.deletedOn = deletedOn;
+    }
+
+    public Set<Bill> getBills() {
+        return bills;
+    }
+
+    public void setBills(Set<Bill> bills) {
+        this.bills = bills;
     }
 
     @Override

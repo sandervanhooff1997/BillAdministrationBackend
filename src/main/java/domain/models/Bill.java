@@ -11,9 +11,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static javax.persistence.EnumType.STRING;
 
@@ -30,9 +28,18 @@ public class Bill implements Serializable {
     @GeneratedValue
     private Long id;
 
-    @OneToMany(targetEntity = CarTracker.class, cascade = CascadeType.ALL)
+//    @ManyToMany(targetEntity = CarTracker.class, cascade = CascadeType.ALL)
+//    @LazyCollection(LazyCollectionOption.FALSE)
+//    private List carTrackers;
+
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(
+            name = "bills_cartrackers",
+            joinColumns = { @JoinColumn(name = "bill_id") },
+            inverseJoinColumns = { @JoinColumn(name = "cartracker_id") }
+    )
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List carTrackers;
+    Set<CarTracker> carTrackers = new HashSet<>();
 
     @NotNull
     @Enumerated(STRING)
@@ -53,7 +60,7 @@ public class Bill implements Serializable {
     private Date createDate;
 
     public Bill() {
-        carTrackers = new ArrayList();
+
     }
 
     public Date getCreateDate() {
@@ -117,20 +124,8 @@ public class Bill implements Serializable {
         this.monthIndex = monthIndex;
     }
 
-    public List getCarTrackers() {
-        return carTrackers;
-    }
-
     public void addCarTracker(CarTracker carTracker) {
         this.carTrackers.add(carTracker);
-    }
-
-    public CarTracker getCarTracker() {
-        return (CarTracker) carTrackers.get(carTrackers.size()-1);
-    }
-
-    public void setCarTrackers(List carTrackers) {
-        this.carTrackers = carTrackers;
     }
 
     public OwnerCredentials getOwnerCredentials() {
@@ -139,6 +134,14 @@ public class Bill implements Serializable {
 
     public void setOwnerCredentials(OwnerCredentials ownerCredentials) {
         this.ownerCredentials = ownerCredentials;
+    }
+
+    public Set<CarTracker> getCarTrackers() {
+        return carTrackers;
+    }
+
+    public void setCarTrackers(Set<CarTracker> carTrackers) {
+        this.carTrackers = carTrackers;
     }
 
     @Override

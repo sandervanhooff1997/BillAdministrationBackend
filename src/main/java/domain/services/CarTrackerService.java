@@ -24,16 +24,7 @@ public class CarTrackerService {
     }
 
     public List<CarTracker> getAllUnused() {
-        List<CarTracker> carTrackers = getAll();
-        List<Vehicle> vehicles = vehicleService.getAll();
-
-        // remove used cartrackers
-        for (Vehicle v : vehicles) {
-            if (v.getCarTrackers() != null)
-                carTrackers.remove(v.getCarTracker());
-        }
-
-        return carTrackers;
+        return repository.getAllUnused();
     }
 
     public List<CarTracker> getAllNotDeleted() {

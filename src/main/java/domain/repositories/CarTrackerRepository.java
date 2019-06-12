@@ -28,6 +28,16 @@ public class CarTrackerRepository {
 
     }
 
+    public List<CarTracker> getAllUnused() {
+        try {
+            return em.createNamedQuery("CarTracker.getAllUnused", CarTracker.class).getResultList();
+        } catch (Exception ex){
+            System.out.println(ex.getMessage());
+            return null;
+        }
+
+    }
+
     public List<CarTracker> getAllNotDeleted() {
         try {
             return em.createNamedQuery("CarTracker.getAllNotDeleted", CarTracker.class).getResultList();
