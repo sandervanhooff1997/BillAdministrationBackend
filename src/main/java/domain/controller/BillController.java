@@ -1,4 +1,4 @@
-package controller;
+package domain.controller;
 
 import domain.models.*;
 import domain.models.Bill;

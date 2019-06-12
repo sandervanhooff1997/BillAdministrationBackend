@@ -1,4 +1,4 @@
-package controller.Requests;
+package domain.controller.Requests;
 
 import domain.enums.VehicleType;
 

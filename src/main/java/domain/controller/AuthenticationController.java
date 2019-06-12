@@ -1,4 +1,4 @@
-package controller;
+package domain.controller;
 
 import domain.models.auth.Employee;
 import domain.services.auth.AuthenticationService;

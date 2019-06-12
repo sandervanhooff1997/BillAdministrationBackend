@@ -1,4 +1,4 @@
-package controller.Requests;
+package domain.controller.Requests;
 
 public class AddPriceToRoadRequest {
     private Long roadId;

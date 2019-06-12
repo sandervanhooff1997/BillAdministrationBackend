@@ -1,7 +1,7 @@
-package controller;
+package domain.controller;
 
-import domain.controllers.Requests.AddPriceToRoadRequest;
-import domain.controllers.Requests.CreateRoadRequest;
+import domain.controller.Requests.AddPriceToRoadRequest;
+import domain.controller.Requests.CreateRoadRequest;
 import domain.models.Price;
 import domain.models.Road;
 import domain.services.PriceService;
@@ -10,7 +10,6 @@ import domain.services.RoadService;
 import javax.ejb.EJB;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;

@@ -1,6 +1,6 @@
-package controller;
+package domain.controller;
 
-import controller.Requests.CreateOwnershipHistoryRequest;
+import domain.controller.Requests.CreateOwnershipHistoryRequest;
 import domain.models.OwnershipHistory;
 import domain.services.OwnershipHistoryService;
 

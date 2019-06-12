@@ -1,16 +1,15 @@
-package controller;
+package domain.controller;
 
-import controller.Requests.CreateVehicleRequest;
-import controller.Requests.MarkVehicleAsStolenRequest;
-import controller.Requests.TransferOwenershipVehicleRequest;
-import controller.Requests.ChangeCarTrackerVehicleRequest;
+import domain.controller.Requests.CreateVehicleRequest;
+import domain.controller.Requests.MarkVehicleAsStolenRequest;
+import domain.controller.Requests.TransferOwenershipVehicleRequest;
+import domain.controller.Requests.ChangeCarTrackerVehicleRequest;
 import domain.models.Vehicle;
 import domain.services.VehicleService;
 
 import javax.ejb.EJB;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
-import java.util.List;
 
 @Path("vehicle")
 public class VehicleController {

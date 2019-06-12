@@ -1,6 +1,4 @@
-package controller.Requests;
-
-import domain.models.OwnerCredentials;
+package domain.controller.Requests;
 
 public class TransferOwenershipVehicleRequest {
     private Long vehicleId;
