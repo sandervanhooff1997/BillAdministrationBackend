@@ -4,17 +4,19 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
+import java.awt.*;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Entity
 @NamedQueries({
-        @NamedQuery(name = "Road.getById", query = "select rc from Road rc where rc.id = :id"),
-        @NamedQuery(name = "Road.getAll", query = "select b from Road b")
+        @NamedQuery(name = "Region.getById", query = "select r from Region r where r.id = :id"),
+        @NamedQuery(name = "Region.getAll", query = "select r from Region r")
 })
-@Table(name = "roads")
-public class Road {
+@Table(name = "regions")
+public class Region {
 
     @Id
     @GeneratedValue
@@ -22,17 +24,19 @@ public class Road {
 
     private String name;
 
+    private Polygon point;
+
     @OneToMany(targetEntity = Price.class, cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
-    @CollectionTable(name = "road_prices")
+    @CollectionTable(name = "region_prices")
     private List<Price> prices;
 
     @OneToMany(targetEntity = Price.class, cascade = CascadeType.ALL)
     @LazyCollection(LazyCollectionOption.FALSE)
-    @CollectionTable(name = "road_rush_prices")
+    @CollectionTable(name = "region_rush_prices")
     private List<Price> rushPrices;
 
-    public Road() {
+    public Region() {
     }
 
     public Long getId() {
@@ -105,5 +109,11 @@ public class Road {
         return null;
     }
 
+    public Polygon getPoint() {
+        return point;
+    }
 
+    public void setPoint(Polygon point) {
+        this.point = point;
+    }
 }

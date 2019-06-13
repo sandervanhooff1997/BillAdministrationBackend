@@ -24,6 +24,33 @@ public class PriceService {
         return repository.getAllUnused();
     }
 
+    public Price getDefaultPrice() {
+        Price p = repository.getDefaultPrice();
+
+        // create if doesnt exist
+        if (p == null){
+            p = new Price();
+            p.setPrice(0D);
+            p.setDefaultPrice(true);
+            create(p);
+        }
+
+        return p;
+    }
+
+    public Price getDefaultRushPrice() {
+        Price p = repository.getDefaultRushPrice();
+
+        // create if doesnt exist
+        if (p == null){
+            p = new Price();
+            p.setPrice(0D);
+            p.setDefaultRushPrice(true);
+            create(p);
+        }
+
+        return p;
+    }
 
     public Price create(Price price) {
         if (price == null)
@@ -33,6 +60,34 @@ public class PriceService {
             price.setBegin(new Date());
             price.setEnd(null);
             return repository.create(price);
+        } catch (HibernateException e) {
+            return null;
+        }
+    }
+
+    public Price createOrUpdateDefaultPrice(double price, boolean isRushHour) {
+        try {
+            Price p = isRushHour ? getDefaultRushPrice() : getDefaultPrice();
+
+            // new price
+            if (p == null) {
+                p = new Price();
+                p.setPrice(price);
+
+                if (isRushHour)
+                    p.setDefaultRushPrice(true);
+                else
+                    p.setDefaultPrice(true);
+
+                repository.create(p);
+            }
+            //existing price
+            else {
+                p.setPrice(price);
+                repository.update(p);
+            }
+
+            return p;
         } catch (HibernateException e) {
             return null;
         }
