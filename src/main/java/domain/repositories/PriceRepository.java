@@ -37,6 +37,24 @@ public class PriceRepository {
         }
     }
 
+    public Price getDefaultPrice() {
+        try {
+            return em.createNamedQuery("Price.getDefaultPrice", Price.class).getSingleResult();
+        } catch (Exception ex){
+            System.out.println(ex.getMessage());
+            return null;
+        }
+    }
+
+    public Price getDefaultRushPrice() {
+        try {
+            return em.createNamedQuery("Price.getDefaultRushPrice", Price.class).getSingleResult();
+        } catch (Exception ex){
+            System.out.println(ex.getMessage());
+            return null;
+        }
+    }
+
     public Price getById(Long id) {
         try {
             return em.createNamedQuery("Price.getById", Price.class).setParameter("id", id).getSingleResult();

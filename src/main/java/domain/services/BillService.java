@@ -11,8 +11,6 @@ import domain.utils.NumberUtils;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -267,6 +265,9 @@ public class BillService {
 
     public List<Bill> getAll() {
         return repository.getAll();
+    }
+    public List<Bill> getAllByBsn(Long bsn) {
+        return repository.getAllByBsn(bsn);
     }
 
     public Bill getById(Long id) {

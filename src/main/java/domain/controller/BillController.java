@@ -22,6 +22,13 @@ public class BillController {
         return Response.ok(service.getAll()).build();
     }
 
+    @GET
+    @Path("/{bsn}")
+    @Produces("application/json")
+    public Response getAllByBsn(@PathParam(value = "bsn") Long bsn) {
+        return Response.ok(service.getAllByBsn(bsn)).build();
+    }
+
     @POST
     @Path("recalculate")
     @Produces("application/json")

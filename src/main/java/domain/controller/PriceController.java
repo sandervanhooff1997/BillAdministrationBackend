@@ -1,5 +1,6 @@
 package domain.controller;
 
+import domain.controller.Requests.CreateOrUpdateDefaultPriceRequest;
 import domain.models.Price;
 import domain.services.PriceService;
 
@@ -26,11 +27,33 @@ public class PriceController {
         return Response.ok(service.getAllUnused()).build();
     }
 
+    @GET
+    @Path("/default")
+    @Produces("application/json")
+    public Response getDefault() {
+        return Response.ok(service.getDefaultPrice()).build();
+    }
+
+    @GET
+    @Path("/defaultrush")
+    @Produces("application/json")
+    public Response getDefaultRush() {
+        return Response.ok(service.getDefaultRushPrice()).build();
+    }
+
     @POST
     @Consumes("application/json")
     @Produces("application/json")
     public Response create(Price price) {
         return Response.ok(service.create(price)).build();
+    }
+
+    @POST
+    @Path("/default")
+    @Consumes("application/json")
+    @Produces("application/json")
+    public Response createOrUpdateDefaultPrice(CreateOrUpdateDefaultPriceRequest req) {
+        return Response.ok(service.createOrUpdateDefaultPrice(req.getPrice(), req.isRushPrice())).build();
     }
 
     @PUT

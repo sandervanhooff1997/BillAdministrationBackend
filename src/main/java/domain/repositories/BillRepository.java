@@ -1,6 +1,7 @@
 package domain.repositories;
 
 import domain.models.Bill;
+import domain.models.Price;
 import org.hibernate.HibernateException;
 
 import javax.ejb.Stateless;
@@ -27,6 +28,17 @@ public class BillRepository {
             return null;
         }
 
+    }
+
+    public List<Bill> getAllByBsn(Long bsn) {
+        try {
+            return em.createNamedQuery("Bill.getAllByBsn", Bill.class)
+                    .setParameter("bsn", bsn)
+                    .getResultList();
+        } catch (Exception ex){
+            System.out.println(ex.getMessage());
+            return null;
+        }
     }
 
     public void create(Bill bill) {

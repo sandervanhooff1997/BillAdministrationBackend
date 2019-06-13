@@ -10,7 +10,6 @@ import org.hibernate.annotations.LazyCollectionOption;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.text.DateFormatSymbols;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static javax.persistence.EnumType.STRING;
@@ -19,7 +18,8 @@ import static javax.persistence.EnumType.STRING;
 @Entity
 @NamedQueries({
         @NamedQuery(name = "Bill.getById", query = "select b from Bill b where b.id = :id"),
-        @NamedQuery(name = "Bill.getAll", query = "select b from Bill b")
+        @NamedQuery(name = "Bill.getAll", query = "select b from Bill b"),
+        @NamedQuery(name = "Bill.getAllByBsn", query = "select b from Bill b where b.ownerCredentials.bsn = :bsn")
 })
 @Table(name = "bills")
 public class Bill implements Serializable {
@@ -27,10 +27,6 @@ public class Bill implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
-
-//    @ManyToMany(targetEntity = CarTracker.class, cascade = CascadeType.ALL)
-//    @LazyCollection(LazyCollectionOption.FALSE)
-//    private List carTrackers;
 
     @ManyToMany(cascade = { CascadeType.ALL })
     @JoinTable(
@@ -45,7 +41,6 @@ public class Bill implements Serializable {
     @Enumerated(STRING)
     @Column(nullable = false)
     private PaymentStatus paymentStatus = PaymentStatus.OPEN;
-
 
     private Double totalAmount;
 
