@@ -101,12 +101,4 @@ public class RoadService {
         repository.delete(road);
         return true;
     }
-
-    public double getDefaultKilometerRate () {
-        return 0.1;
-    }
-
-    public double getDefaultRushHourKilometerRate () {
-        return 0.2;
-    }
 }

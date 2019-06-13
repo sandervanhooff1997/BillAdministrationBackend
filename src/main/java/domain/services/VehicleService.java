@@ -161,6 +161,8 @@ public class VehicleService {
 
         v.setOwnerCredentials(oc);
 
+        ownershipHistoryService.create(vId, ocId);
+
         return update(v);
     }
 

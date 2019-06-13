@@ -11,9 +11,13 @@ import domain.utils.NumberUtils;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import java.awt.*;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Stateless
@@ -30,6 +34,9 @@ public class BillService {
 
     @EJB
     private RoadService roadService;
+
+    @EJB
+    private PriceService priceService;
 
     /**
      * Sort all movements by account rider and car
@@ -117,28 +124,7 @@ public class BillService {
         // create the bill
         Bill b = new Bill();
         b.setMonth(DateUtils.getMonthIndex(cm.getMovements().get(0).getDate()));
-
-        b.setTotalAmount(0D);
-        for (Movement m : cm.getMovements()) {
-            // find the road
-            Road r = roads
-                    .stream()
-                    .filter( x -> x.getName().equals(m.getAddress()))
-                    .findFirst()
-                    .orElse( null );
-
-            boolean inRushHour = false;
-            try {
-                inRushHour = isRushHour(m.getDate());
-            } catch (Exception e) {
-
-            }
-
-            b.setTotalAmount(b.getTotalAmount() + calculateTaxes(m, r, inRushHour));
-        }
-
-        b.setTotalAmount(applyVehicleTypeFactor(cm.getVehicle().getVehicleType(), b.getTotalAmount()));
-        b.setTotalAmount(NumberUtils.round(b.getTotalAmount(), 2));
+        b.setTotalAmount(getTotalAmount(cm.getMovements(), cm.getVehicle(), roads));
         b.setPaymentStatus(PaymentStatus.OPEN);
 
         if (cm.getVehicle().getCarTrackers().size() > 0) {
@@ -160,8 +146,23 @@ public class BillService {
             throw new Exception("Invalid data");
 
         b.setMonth(DateUtils.getMonthIndex(movements.get(0).getDate()));
+        Vehicle vehicle = vehicleService.getByCarTrackerId(movements.get(0).getCarTrackerId());
+        if (vehicle == null) throw new Exception("Vehicle with cartrackerID " + movements.get(0).getCarTrackerId() + " not found");
+        b.setTotalAmount(getTotalAmount(movements, vehicle, roads));
 
-        b.setTotalAmount(0D);
+        b.setPaymentStatus(PaymentStatus.OPEN);
+        b.setCarTrackers(b.getCarTrackers());
+
+        // persist & return
+        repository.update(b);
+        return b;
+    }
+
+    public double getTotalAmount(List<Movement> movements, Vehicle v, List<Road> roads) {
+        // check if the previous movement is in a rectangle box
+        boolean previousInRegion = false;
+        double amount = 0D;
+
         for (Movement m : movements) {
             // find the road
             Road r = roads
@@ -177,22 +178,23 @@ public class BillService {
 
             }
 
-            b.setTotalAmount(b.getTotalAmount() + calculateTaxes(m, r, inRushHour));
+            // check if the current movement is in a rectangle box
+            boolean currentlyInRegion = isInRectangle(m.getCoordinate());
+
+            if (!previousInRegion && currentlyInRegion) {
+                previousInRegion = true;
+                // todo: change hardcoded 5 to a database managed amount per region
+                amount += 10;
+            } else if (!currentlyInRegion) {
+                previousInRegion = false;
+                amount += calculateTaxes(m, r, inRushHour);
+            }
         }
 
-        Vehicle vehicle = vehicleService.getByCarTrackerId(movements.get(0).getCarTrackerId());
-        if (vehicle == null) throw new Exception("Vehicle with cartrackerID " + movements.get(0).getCarTrackerId() + " not found");
+        amount = applyVehicleTypeFactor(v.getVehicleType(), amount);
 
-        b.setTotalAmount(applyVehicleTypeFactor(vehicle.getVehicleType(), b.getTotalAmount()));
-        b.setTotalAmount(NumberUtils.round(b.getTotalAmount(), 2));
-        b.setPaymentStatus(PaymentStatus.OPEN);
-        b.setCarTrackers(b.getCarTrackers());
-
-        // persist & return
-        repository.update(b);
-        return b;
+        return NumberUtils.round(amount, 2);
     }
-
 
     public List<CarTracker> getCarTrackersInCarMovements(CarMovements cm) {
         // get the max date of movements in this set
@@ -214,19 +216,19 @@ public class BillService {
 
     public Double calculateTaxes (Movement m, Road r, boolean inRushHour) {
         // if no road was found, apply default rates
-        if (r == null && inRushHour) return m.getDistance() * roadService.getDefaultRushHourKilometerRate();
-        if (r == null) return m.getDistance() * roadService.getDefaultKilometerRate();
+        if (r == null && inRushHour) return m.getDistance() * priceService.getDefaultRushPrice().getPrice();
+        if (r == null) return m.getDistance() * priceService.getDefaultPrice().getPrice();
 
         if (inRushHour) {
             // rush hour for found road
             Price p = r.getMovementRushHourPrice(m.getDate());
-            if (p == null) return m.getDistance() * roadService.getDefaultRushHourKilometerRate();
+            if (p == null) return m.getDistance() * priceService.getDefaultRushPrice().getPrice();
             return m.getDistance() * p.getPrice();
         }
 
         // default rate for found road
         Price p = r.getMovementPrice(m.getDate());
-        if (p == null) return m.getDistance() * roadService.getDefaultKilometerRate();
+        if (p == null) return m.getDistance() * priceService.getDefaultPrice().getPrice();
         return m.getDistance() * p.getPrice();
     }
 
@@ -237,6 +239,16 @@ public class BillService {
 
         return dateFormat.parse(dateFormat.format(d)).after(dateFormat.parse("17:00"))
                 && dateFormat.parse(dateFormat.format(d)).before(dateFormat.parse("19:00"));
+    }
+
+    // todo: manage regions from database
+    public boolean isInRectangle (Point2D.Double p) {
+        Point2D.Double leftTop = new Point2D.Double(6.585,51.56);
+        Point2D.Double rightBottom = new Point2D.Double(7.16,51.21);
+
+        Rectangle2D.Double rect = new Rectangle2D.Double(leftTop.getX(), leftTop.getY(), rightBottom.getX() - leftTop.getX(), rightBottom.getY() - leftTop.getY());
+
+        return rect.contains(p);
     }
 
     public boolean changePaymenStatus (Bill bill) {
