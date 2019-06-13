@@ -1,5 +1,6 @@
 package domain.controller;
 
+import domain.controller.Requests.RecalculateBillRequest;
 import domain.models.*;
 import domain.models.Bill;
 import domain.services.BillService;
@@ -21,11 +22,17 @@ public class BillController {
         return Response.ok(service.getAll()).build();
     }
 
-    @GET
-    @Path("/{id}/recalculate")
+    @POST
+    @Path("recalculate")
     @Produces("application/json")
-    public Response recalculateBill(@PathParam("id") Long id) {
-        return Response.ok(service.recalculateBill(id)).build();
+    public Response recalculateBill(RecalculateBillRequest req) {
+        try {
+            return Response.ok(service.recalculateBill(req.getBillId(), req.getMovements())).build();
+        } catch (NotFoundException ex) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        } catch (Exception ex) {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
     }
 
     @GET

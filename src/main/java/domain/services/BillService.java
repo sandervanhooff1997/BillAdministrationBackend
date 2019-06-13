@@ -120,6 +120,7 @@ public class BillService {
         Bill b = new Bill();
         b.setMonth(DateUtils.getMonthIndex(cm.getMovements().get(0).getDate()));
 
+        b.setTotalAmount(0D);
         for (Movement m : cm.getMovements()) {
             // find the road
             Road r = roads
@@ -135,7 +136,7 @@ public class BillService {
 
             }
 
-            b.setTotalAmount(calculateTaxes(m, r, inRushHour));
+            b.setTotalAmount(b.getTotalAmount() + calculateTaxes(m, r, inRushHour));
         }
 
         b.setTotalAmount(applyVehicleTypeFactor(cm.getVehicle().getVehicleType(), b.getTotalAmount()));
@@ -153,6 +154,44 @@ public class BillService {
 
         // persist & return
         create(b);
+        return b;
+    }
+
+    public Bill makeBill (Bill b, List<Movement> movements, List<Road> roads) throws Exception {
+        if (b == null || movements == null || movements.size() == 0)
+            throw new Exception("Invalid data");
+
+        b.setMonth(DateUtils.getMonthIndex(movements.get(0).getDate()));
+
+        b.setTotalAmount(0D);
+        for (Movement m : movements) {
+            // find the road
+            Road r = roads
+                    .stream()
+                    .filter( x -> x.getName().equals(m.getAddress()))
+                    .findFirst()
+                    .orElse( null );
+
+            boolean inRushHour = false;
+            try {
+                inRushHour = isRushHour(m.getDate());
+            } catch (Exception e) {
+
+            }
+
+            b.setTotalAmount(b.getTotalAmount() + calculateTaxes(m, r, inRushHour));
+        }
+
+        Vehicle vehicle = vehicleService.getByCarTrackerId(movements.get(0).getCarTrackerId());
+        if (vehicle == null) throw new Exception("Vehicle with cartrackerID " + movements.get(0).getCarTrackerId() + " not found");
+
+        b.setTotalAmount(applyVehicleTypeFactor(vehicle.getVehicleType(), b.getTotalAmount()));
+        b.setTotalAmount(NumberUtils.round(b.getTotalAmount(), 2));
+        b.setPaymentStatus(PaymentStatus.OPEN);
+        b.setCarTrackers(b.getCarTrackers());
+
+        // persist & return
+        repository.update(b);
         return b;
     }
 
@@ -221,7 +260,6 @@ public class BillService {
     public void create(Bill b) {
         try {
             repository.create(b);
-
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
@@ -235,18 +273,18 @@ public class BillService {
         return repository.getById(id);
     }
 
-    public Bill recalculateBill(Long id) {
-        Bill b = getById(id);
+    public Bill recalculateBill(Long id, List<Movement> movements) throws Exception {
+        if (id == null || movements == null || movements.size() == 0)
+            return null;
 
+        List<Road> roads = roadService.getAll();
+        if (roads == null) throw new Exception("Invalid data");
+
+        Bill b = getById(id);
         if (b == null)
             return null;
 
-        /** todo: get movements by cartracker and month of bill
-         *  List<Movement></Movement> movements = movementService.getMovementsFromCarTrackersAndId(b.getCarTrackers(), b.getMonthIndex());
-         *  recalculate(movements);
-         */
-
-        return b;
+        return makeBill(b, movements, roads);
     }
 
     public List<Bill> getAllByVehicleId(Long vehicleId) {
