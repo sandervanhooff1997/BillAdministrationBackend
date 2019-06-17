@@ -46,7 +46,7 @@ pipeline {
                 }
             }
             when {
-                branch 'develop'
+                branch 'testing'
             }
             steps {
                 sh './jenkins/scripts/test.sh'
