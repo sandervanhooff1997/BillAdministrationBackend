@@ -19,8 +19,10 @@ pipeline {
                 withSonarQubeEnv('sonarqube') {
                     sh "${scannerHome}/bin/sonar-scanner -X"
                 }
-                timeout(time: 10, unit: 'MINUTES') {
-                    waitForQualityGate abortPipeline: false
+                sleep(10)
+                qualitygate = waitForQualityGate()
+                if (qualitygate.status != "OK") {
+                    currentBuild.result = "FAILURE"
                 }
             }
         }
