@@ -8,6 +8,9 @@ pipeline {
             agent {
                 docker 'openjdk:8-jre'
             }
+            when {
+                branch 'develop'
+            }
             environment {
                 scannerHome = tool 'SonarQubeScanner'
             }
@@ -21,16 +24,82 @@ pipeline {
                 }
             }
         }
+
         stage('Build') {
+            agent {
+                docker {
+                    image 'node:6-alpine'
+                }
+            }
+            when {
+                branch 'develop'
+            }
+            steps {
+                sh 'npm install'
+            }
+        }
+
+        stage('Test') {
+            agent {
+                docker {
+                    image 'node:6-alpine'
+                }
+            }
+            when {
+                branch 'develop'
+            }
+            steps {
+                sh './jenkins/scripts/test.sh'
+            }
+        }
+
+        stage('Deliver for development') {
             agent {
                 docker {
                     image 'node:6-alpine'
                     args '-p 3000:3000'
                 }
             }
+            when {
+                branch 'develop'
+            }
             steps {
-                sh 'npm install'
+                sh './jenkins/scripts/deliver-for-development.sh'
+                input message: 'Finished using the web site? (Click "Proceed" to continue)'
+                sh './jenkins/scripts/kill.sh'
             }
         }
+
+         // old deliver stage
+        // stage('Deliver') {
+        //     agent {
+        //         docker {
+        //             image 'node:6-alpine'
+        //             args '-p 3000:3000'
+        //         }
+        //     }
+        //     steps {
+        //         sh './jenkins/scripts/deliver.sh'
+        //         sh './jenkins/scripts/kill.sh'
+        //     }
+        // }
+
+        stage('Deploy for production') {
+            agent {
+                docker {
+                    image 'node:6-alpine'
+                    args '-p 5000:5000'
+                }
+            }
+            when {
+                branch 'master'
+            }
+            steps {
+                sh './jenkins/scripts/deploy-for-production.sh'
+                input message: 'Finished using the web site? (Click "Proceed" to continue)'
+                sh './jenkins/scripts/kill.sh'
+            }
+        }
+
     }
 }
